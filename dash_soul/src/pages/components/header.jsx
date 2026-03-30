@@ -1,6 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function Header() {
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/';
+
   return (
     <div className="header-wrapper">
       <header className="header">
@@ -9,6 +12,7 @@ function Header() {
           LOGO
         </div>
 
+        {!isLoginPage && (
         <Link to="/" className="header-login">
           <div className="header-login-text">
             <p>Já possui uma conta?</p>
@@ -21,6 +25,7 @@ function Header() {
             </svg>
           </div>
         </Link>
+        )}
       </header>
     </div>
   );

@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { useNavigate , Link} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
-import Login from './login';
 import './global.css';
 
 function Cadastro() {
