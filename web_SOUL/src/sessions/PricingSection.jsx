@@ -1,0 +1,124 @@
+import { Check, Star } from "lucide-react"
+
+const plans = [
+  {
+    name: "Essencial",
+    description: "Ideal para pequenas empresas que estão começando a digitalizar sua gestão.",
+    price: "250",
+    features: [
+      "Dashboard básico",
+      "Gestão de estoque",
+      "Controle de funcionários",
+      "Agenda integrada",
+      "Relatórios mensais",
+      "Suporte por email",
+    ],
+    cta: "Começar Agora",
+    popular: false,
+    slug: "essencial",
+  },
+  {
+    name: "Profissional",
+    description: "Para empresas em crescimento que precisam de recursos avançados.",
+    price: "600",
+    features: [
+      "Tudo do plano Essencial",
+      "Gestão de logística",
+      "Controle financeiro completo",
+      "Relatórios personalizados",
+      "Multi-usuários (até 10)",
+      "Suporte prioritário",
+      "Integrações básicas",
+      "App mobile",
+    ],
+    cta: "Escolher Profissional",
+    popular: true,
+    slug: "profissional",
+  },
+  {
+    name: "Enterprise",
+    description: "Solução completa para grandes empresas e indústrias.",
+    price: "1.250",
+    features: [
+      "Tudo do plano Profissional",
+      "Usuários ilimitados",
+      "API personalizada",
+      "Integrações avançadas",
+      "Treinamento da equipe",
+      "Gerente de conta dedicado",
+      "SLA garantido",
+      "Customizações exclusivas",
+      "Backup em tempo real",
+    ],
+    cta: "Falar com Vendas",
+    popular: false,
+    slug: "enterprise",
+  },
+]
+
+export function PricingSection() {
+  return (
+    <section id="planos" className="pricing-section">
+      <div className="container">
+        <div className="section-header">
+          <h2 className="section-title">
+            Planos que cabem no seu{" "}
+            <span className="text-accent">orçamento</span>
+          </h2>
+          <p className="section-desc">
+            Escolha o plano ideal para o tamanho da sua empresa. Todos incluem
+            atualizações gratuitas e suporte técnico.
+          </p>
+        </div>
+
+        <div className="pricing-grid">
+          {plans.map((plan) => (
+            <div
+              key={plan.name}
+              className={`pricing-card ${plan.popular ? "pricing-card--popular" : ""}`}
+            >
+              {plan.popular && (
+                <div className="popular-badge">
+                  <Star size={12} fill="currentColor" />
+                  Mais Popular
+                </div>
+              )}
+
+              <div className="plan-header">
+                <h3 className="plan-name">{plan.name}</h3>
+                <p className="plan-desc">{plan.description}</p>
+              </div>
+
+              <div className="plan-price">
+                <span className="price-currency">R$</span>
+                <span className="price-value">{plan.price}</span>
+                <span className="price-period">/mês</span>
+              </div>
+
+              <ul className="plan-features">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="plan-feature">
+                    <Check size={16} className="feature-check" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href={`#contato`}
+                className={`plan-cta ${plan.popular ? "plan-cta--popular" : ""}`}
+              >
+                {plan.cta}
+              </a>
+            </div>
+          ))}
+        </div>
+
+        <p className="pricing-note">
+          Precisa de um plano personalizado?{" "}
+          <a href="#contato" className="pricing-link">Entre em contato</a>
+        </p>
+      </div>
+    </section>
+  )
+}
