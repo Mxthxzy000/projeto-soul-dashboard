@@ -1,0 +1,80 @@
+/* ============================================
+   PORTFOLIO SECTION - Dark background
+   ============================================ */
+.portfolio-section {
+  padding: 96px 0;
+  background: var(--color-surface-dark);
+}
+
+/* Override section-title color for dark background */
+.portfolio-section .section-title {
+  color: var(--color-text-dark-heading);
+}
+
+.portfolio-section .section-badge {
+  background: rgba(243, 133, 18, 0.15);
+  border-color: rgba(243, 133, 18, 0.40);
+  color: var(--color-accent);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.portfolio-card {
+  background: var(--color-surface-dark-2);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-xl);
+  padding: 28px 32px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.portfolio-card:hover {
+  border-color: rgba(243, 133, 18, 0.35);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.20);
+}
+
+.portfolio-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.portfolio-type {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(243, 133, 18, 0.15);
+  color: var(--color-accent);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(243,133,18,0.25);
+}
+
+.portfolio-link-icon {
+  color: rgba(255,255,255,0.35);
+  transition: color 0.2s;
+}
+
+.portfolio-card:hover .portfolio-link-icon { color: var(--color-accent); }
+
+.portfolio-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text-dark-heading);
+  margin-bottom: 10px;
+}
+
+.portfolio-desc {
+  font-size: 14px;
+  color: var(--color-text-dark-muted);
+  line-height: 1.65;
+}
+
+@media (max-width: 768px) {
+  .portfolio-grid { grid-template-columns: 1fr; }
+}
