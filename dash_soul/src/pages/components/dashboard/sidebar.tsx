@@ -1,5 +1,4 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import '../dashboard.css'
 
 const navItems = [
   {
