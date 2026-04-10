@@ -1,55 +1,62 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import Header from './components/header';
-import Footer from './components/footer';
-import './global.css';
+import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import Header from './components/header'
+import Footer from './components/footer'
+import './global.css'
 
 function RecuperarSenha() {
-  const [email, setEmail] = useState('');
-  const [novaSenha, setNovaSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
-  const [etapa, setEtapa] = useState(1);
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [novaSenha, setNovaSenha] = useState('')
+  const [confirmarSenha, setConfirmarSenha] = useState('')
+  const [etapa, setEtapa] = useState(1)
+  const navigate = useNavigate()
 
-  const handleVerificarEmail = (e) => {
-    e.preventDefault();
+  const handleVerificarEmail = (e: React.FormEvent) => {
+    e.preventDefault()
 
-    const usuarioSalvo = localStorage.getItem('usuario');
+    const usuarioSalvo = localStorage.getItem('usuario')
     if (!usuarioSalvo) {
-      alert('Nenhum usuário cadastrado. Cadastre-se primeiro.');
-      return;
+      alert('Nenhum usuário cadastrado. Cadastre-se primeiro.')
+      return
     }
 
-    const usuario = JSON.parse(usuarioSalvo);
+    const usuario = JSON.parse(usuarioSalvo)
 
     if (email === usuario.email) {
-      setEtapa(2);
+      setEtapa(2)
     } else {
-      alert('Email não encontrado. Verifique se está cadastrado.');
+      alert('Email não encontrado. Verifique se está cadastrado.')
     }
-  };
+  }
 
-  const handleRedefinirSenha = (e) => {
-    e.preventDefault();
+  const handleRedefinirSenha = (e: React.FormEvent) => {
+    e.preventDefault()
 
     if (!novaSenha || !confirmarSenha) {
-      alert('Preencha os dois campos de senha.');
-      return;
+      alert('Preencha os dois campos de senha.')
+      return
     }
 
     if (novaSenha !== confirmarSenha) {
-      alert('As senhas não conferem.');
-      return;
+      alert('As senhas não conferem.')
+      return
     }
 
-    const usuarioSalvo = localStorage.getItem('usuario');
-    const usuario = JSON.parse(usuarioSalvo);
-    usuario.senha = novaSenha;
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    if (novaSenha.length < 6) {
+      alert('A senha deve ter pelo menos 6 caracteres.')
+      return
+    }
 
-    alert('Senha alterada com sucesso! Faça login novamente.');
-    navigate('/');
-  };
+    const usuarioSalvo = localStorage.getItem('usuario')
+    if (!usuarioSalvo) return
+
+    const usuario = JSON.parse(usuarioSalvo)
+    usuario.senha = novaSenha
+    localStorage.setItem('usuario', JSON.stringify(usuario))
+
+    alert('Senha alterada com sucesso! Faça login novamente.')
+    navigate('/')
+  }
 
   return (
     <div className="page-container">
@@ -58,14 +65,13 @@ function RecuperarSenha() {
       <main className="main-content">
         <div className="form-card">
           <div className="form-header">
-            {/* Placeholder para Logo */}
-            <div className="form-logo">
-              LOGO
-            </div>
-            <h2 className="form-title">{etapa === 1 ? 'Recuperar Senha' : 'Definir Nova Senha'}</h2>
+            <div className="form-logo">LOGO</div>
+            <h2 className="form-title">
+              {etapa === 1 ? 'Recuperar Senha' : 'Definir Nova Senha'}
+            </h2>
           </div>
 
-          <div className="form-divider"></div>
+          <div className="form-divider" />
 
           {etapa === 1 && (
             <form onSubmit={handleVerificarEmail}>
@@ -86,7 +92,7 @@ function RecuperarSenha() {
                 </button>
               </div>
 
-              <div className="form-divider"></div>
+              <div className="form-divider" />
 
               <p style={{ textAlign: 'center', marginTop: '1rem' }}>
                 Lembrou sua senha? <Link to="/">Faça login</Link>
@@ -121,7 +127,7 @@ function RecuperarSenha() {
                 </button>
               </div>
 
-              <div className="form-divider"></div>
+              <div className="form-divider" />
 
               <p style={{ textAlign: 'center', marginTop: '1rem' }}>
                 <button type="button" className="secondary" onClick={() => setEtapa(1)}>
@@ -135,7 +141,7 @@ function RecuperarSenha() {
 
       <Footer />
     </div>
-  );
+  )
 }
 
-export default RecuperarSenha;
+export default RecuperarSenha
