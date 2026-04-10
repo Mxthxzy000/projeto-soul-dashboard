@@ -2,8 +2,12 @@
    PORTFOLIO SECTION - Dark background
    ============================================ */
 .portfolio-section {
-  padding: 96px 0;
+  min-height: 100vh;
+  padding: 120px 0;
   background: var(--color-surface-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Override section-title color for dark background */
@@ -20,14 +24,14 @@
 .portfolio-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 28px;
 }
 
 .portfolio-card {
   background: var(--color-surface-dark-2);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: var(--radius-xl);
-  padding: 28px 32px;
+  padding: 36px 40px;
   transition: border-color 0.2s, box-shadow 0.2s;
   animation: fadeIn 0.6s ease-out forwards;
 }
@@ -63,18 +67,19 @@
 .portfolio-card:hover .portfolio-link-icon { color: var(--color-accent); }
 
 .portfolio-name {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--color-text-dark-heading);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .portfolio-desc {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--color-text-dark-muted);
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 @media (max-width: 768px) {
+  .portfolio-section { min-height: auto; padding: 100px 0; }
   .portfolio-grid { grid-template-columns: 1fr; }
 }

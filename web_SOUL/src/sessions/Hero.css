@@ -2,10 +2,13 @@
    HERO SECTION
    ============================================ */
 .hero-section {
-  padding: 80px 0 96px;
+  min-height: 100vh;
+  padding: 120px 0;
   background: var(--color-bg);
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 
 .hero-section::before {
@@ -22,8 +25,9 @@
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 56px;
+  gap: 80px;
   align-items: center;
+  width: 100%;
 }
 
 .hero-content { display: flex; flex-direction: column; gap: 24px; }
@@ -43,17 +47,17 @@
 }
 
 .hero-title {
-  font-size: clamp(36px, 5vw, 52px);
+  font-size: clamp(42px, 6vw, 68px);
   font-weight: 800;
   color: var(--color-text-heading);
-  line-height: 1.1;
-  letter-spacing: -1.5px;
+  line-height: 1.08;
+  letter-spacing: -2px;
 }
 
 .hero-desc {
-  font-size: 16px;
+  font-size: 18px;
   color: var(--color-text-muted);
-  max-width: 460px;
+  max-width: 520px;
   line-height: 1.75;
 }
 
@@ -65,16 +69,16 @@
 
 .hero-stats {
   display: flex;
-  gap: 36px;
-  padding-top: 8px;
+  gap: 48px;
+  padding-top: 16px;
   border-top: 1px solid var(--color-border);
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
-.hero-stat { display: flex; flex-direction: column; gap: 2px; }
+.hero-stat { display: flex; flex-direction: column; gap: 4px; }
 
 .stat-number {
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 800;
   color: var(--color-accent);
   line-height: 1;
@@ -82,9 +86,9 @@
 }
 
 .stat-label {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text-muted);
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 /* ============================================
@@ -104,7 +108,7 @@
     0 24px 64px rgba(0,0,0,0.12),
     0 4px 16px rgba(0,0,0,0.08);
   position: relative;
-  min-height: 350px;
+  min-height: 450px;
 }
 
 .dashboard-image {
@@ -115,14 +119,14 @@
 }
 
 .dashboard-placeholder {
-  min-height: 350px;
+  min-height: 450px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
-  gap: 16px;
-  padding: 40px;
+  gap: 20px;
+  padding: 48px;
 }
 
 .dashboard-placeholder-icon {
@@ -202,5 +206,8 @@
 @media (max-width: 900px) {
   .hero-grid { grid-template-columns: 1fr; }
   .hero-visual { display: none; }
-  .hero-section { padding: 60px 0 80px; }
+  .hero-section { 
+    min-height: auto;
+    padding: 100px 0 120px; 
+  }
 }
