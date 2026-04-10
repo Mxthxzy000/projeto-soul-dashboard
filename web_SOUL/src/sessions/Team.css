@@ -67,6 +67,33 @@
   color: var(--color-text-muted);
 }
 
+.team-card--clickable {
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
+  position: relative;
+}
+
+.team-github {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  transition: background 0.2s, color 0.2s;
+}
+
+.team-card--clickable:hover .team-github {
+  background: var(--color-accent);
+  color: #FFFFFF;
+}
+
 @media (max-width: 900px) {
   .team-grid { grid-template-columns: repeat(2, 1fr); }
 }

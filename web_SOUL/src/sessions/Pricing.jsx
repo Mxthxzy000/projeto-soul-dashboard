@@ -3,32 +3,32 @@ import { Check, Star } from "lucide-react"
 const plans = [
   {
     name: "Essencial",
-    description: "Ideal para pequenas empresas que estão começando a digitalizar sua gestão.",
+    description: "Ideal para pequenas empresas que estao comecando a digitalizar sua gestao.",
     price: "250",
     features: [
-      "Dashboard básico",
-      "Gestão de estoque",
-      "Controle de funcionários",
+      "Dashboard basico",
+      "Gestao de estoque",
+      "Controle de funcionarios",
       "Agenda integrada",
-      "Relatórios mensais",
+      "Relatorios mensais",
       "Suporte por email",
     ],
-    cta: "Começar Agora",
+    cta: "Comecar Agora",
     popular: false,
     slug: "essencial",
   },
   {
     name: "Profissional",
-    description: "Para empresas em crescimento que precisam de recursos avançados.",
+    description: "Para empresas em crescimento que precisam de recursos avancados.",
     price: "600",
     features: [
       "Tudo do plano Essencial",
-      "Gestão de logística",
+      "Gestao de logistica",
       "Controle financeiro completo",
-      "Relatórios personalizados",
-      "Multi-usuários (até 10)",
-      "Suporte prioritário",
-      "Integrações básicas",
+      "Relatorios personalizados",
+      "Multi-usuarios (ate 10)",
+      "Suporte prioritario",
+      "Integracoes basicas",
       "App mobile",
     ],
     cta: "Escolher Profissional",
@@ -37,17 +37,17 @@ const plans = [
   },
   {
     name: "Enterprise",
-    description: "Solução completa para grandes empresas e indústrias.",
+    description: "Solucao completa para grandes empresas e industrias.",
     price: "1.250",
     features: [
       "Tudo do plano Profissional",
-      "Usuários ilimitados",
+      "Usuarios ilimitados",
       "API personalizada",
-      "Integrações avançadas",
+      "Integracoes avancadas",
       "Treinamento da equipe",
       "Gerente de conta dedicado",
       "SLA garantido",
-      "Customizações exclusivas",
+      "Customizacoes exclusivas",
       "Backup em tempo real",
     ],
     cta: "Falar com Vendas",
@@ -58,16 +58,16 @@ const plans = [
 
 export function PricingSection() {
   return (
-    <section id="planos" className="pricing-section">
+    <section className="pricing-section">
       <div className="container">
         <div className="section-header">
           <h2 className="section-title">
             Planos que cabem no seu{" "}
-            <span className="text-accent">orçamento</span>
+            <span className="text-accent">orcamento</span>
           </h2>
           <p className="section-desc">
             Escolha o plano ideal para o tamanho da sua empresa. Todos incluem
-            atualizações gratuitas e suporte técnico.
+            atualizacoes gratuitas e suporte tecnico.
           </p>
         </div>
 
@@ -117,7 +117,7 @@ export function PricingSection() {
 
         <p className="pricing-note">
           Precisa de um plano personalizado?{" "}
-          <a href="#" className="pricing-link">
+          <a href="mailto:contato@bitlayer.com" className="pricing-link">
             Entre em contato
           </a>
         </p>

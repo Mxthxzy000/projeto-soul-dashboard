@@ -1,43 +1,41 @@
 import { BarChart3, Truck, Users, Calendar, Package, FileText } from "lucide-react"
 
-
-
 const features = [
   {
     icon: BarChart3,
     title: "Dashboards Inteligentes",
     description:
-      "Visualize todos os dados do seu negócio em tempo real com gráficos interativos e métricas personalizáveis.",
+      "Visualize todos os dados do seu negocio em tempo real com graficos interativos e metricas personalizaveis.",
   },
   {
     icon: Truck,
-    title: "Gestão de Logística",
+    title: "Gestao de Logistica",
     description:
-      "Controle total do transporte, rastreamento de entregas e gestão de frota em uma única plataforma.",
+      "Controle total do transporte, rastreamento de entregas e gestao de frota em uma unica plataforma.",
   },
   {
     icon: Users,
-    title: "Gestão de Equipe",
+    title: "Gestao de Equipe",
     description:
-      "Gerencie funcionários, controle ponto, escalas e produtividade com facilidade.",
+      "Gerencie funcionarios, controle ponto, escalas e produtividade com facilidade.",
   },
   {
     icon: Calendar,
     title: "Agenda Integrada",
     description:
-      "Organize reuniões, tarefas e compromissos com notificações automáticas para toda a equipe.",
+      "Organize reunioes, tarefas e compromissos com notificacoes automaticas para toda a equipe.",
   },
   {
     icon: Package,
     title: "Controle de Estoque",
     description:
-      "Monitore níveis de estoque, alertas de reposição e histórico de movimentações.",
+      "Monitore niveis de estoque, alertas de reposicao e historico de movimentacoes.",
   },
   {
     icon: FileText,
-    title: "Relatórios Detalhados",
+    title: "Relatorios Detalhados",
     description:
-      "Gere relatórios personalizados com análises financeiras, operacionais e de desempenho.",
+      "Gere relatorios personalizados com analises financeiras, operacionais e de desempenho.",
   },
 ]
 
@@ -50,11 +48,11 @@ export function FeaturesSection() {
             Tudo que sua empresa{" "}
             <br className="hidden sm:inline" />
             precisa em{" "}
-            <span className="text-accent">um só lugar</span>
+            <span className="text-accent">um so lugar</span>
           </h2>
           <p className="section-desc">
-            Ferramentas poderosas para administração, logística e supervisão que
-            transformam a gestão do seu negócio.
+            Ferramentas poderosas para administracao, logistica e supervisao que
+            transformam a gestao do seu negocio.
           </p>
         </div>
 

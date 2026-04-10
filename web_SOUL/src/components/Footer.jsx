@@ -1,7 +1,18 @@
-import { Link } from "react-router-dom"
 import { Mail, Phone, MapPin } from "lucide-react"
 
-export function Footer() {
+export function Footer({ onNavigate }) {
+  const handleNavClick = (e, sectionId) => {
+    e.preventDefault()
+    if (onNavigate) {
+      onNavigate(sectionId)
+    }
+  }
+
+  const scrollToTop = (e) => {
+    e.preventDefault()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <footer className="footer">
       <div className="container">
@@ -18,8 +29,8 @@ export function Footer() {
               <span className="footer-logo-text">BitLayer</span>
             </div>
             <p className="footer-tagline">
-              Sistema completo de gestão empresarial para administração, logística
-              e supervisão.
+              Sistema completo de gestao empresarial para administracao, logistica
+              e supervisao. Transforme seu negocio com tecnologia.
             </p>
             <div className="footer-contacts">
               <div className="footer-contact">
@@ -32,40 +43,32 @@ export function Footer() {
               </div>
               <div className="footer-contact">
                 <MapPin size={16} />
-                <span>Caçapava - SP</span>
+                <span>Cacapava - SP</span>
               </div>
             </div>
           </div>
 
           <div className="footer-col">
-            <h3 className="footer-col-title">Navegação</h3>
+            <h3 className="footer-col-title">Navegacao</h3>
             <nav className="footer-nav">
-              <Link to="/" className="footer-link">Home</Link>
-              <a href="#equipe" className="footer-link">Sobre Nós</a>
-              <a href="#planos" className="footer-link">Planos</a>
+              <a href="#home" className="footer-link" onClick={scrollToTop}>Home</a>
+              <a href="#sobre" className="footer-link" onClick={(e) => handleNavClick(e, 'sobre')}>Sobre Nos</a>
+              <a href="#planos" className="footer-link" onClick={(e) => handleNavClick(e, 'planos')}>Planos</a>
             </nav>
           </div>
 
           <div className="footer-col">
             <h3 className="footer-col-title">Nossos Planos</h3>
             <nav className="footer-nav">
-              <a href="#planos" className="footer-link">Essencial — R$ 250/mês</a>
-              <a href="#planos" className="footer-link">Profissional — R$ 600/mês</a>
-              <a href="#planos" className="footer-link">Enterprise — R$ 1.250/mês</a>
-            </nav>
-          </div>
-
-          <div className="footer-col">
-            <h3 className="footer-col-title">Legal</h3>
-            <nav className="footer-nav">
-              <a href="#" className="footer-link">Termos de Uso</a>
-              <a href="#" className="footer-link">Privacidade</a>
+              <a href="#planos" className="footer-link" onClick={(e) => handleNavClick(e, 'planos')}>Essencial - R$ 250/mes</a>
+              <a href="#planos" className="footer-link" onClick={(e) => handleNavClick(e, 'planos')}>Profissional - R$ 600/mes</a>
+              <a href="#planos" className="footer-link" onClick={(e) => handleNavClick(e, 'planos')}>Enterprise - R$ 1.250/mes</a>
             </nav>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p>© 2026 BitLayer. Todos os direitos reservados. | Caçapava-SP</p>
+          <p>2026 BitLayer. Todos os direitos reservados. | Cacapava-SP</p>
           <div className="footer-bottom-links">
             <a href="#" className="footer-link">Termos de Uso</a>
             <a href="#" className="footer-link">Privacidade</a>

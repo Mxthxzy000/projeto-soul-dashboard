@@ -1,3 +1,5 @@
+/* S.O.U.L - Sistema de Gestao Empresarial */
+
 /* ============================================
    VARIABLES & RESET
    ============================================ */
@@ -52,12 +54,18 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 body {
@@ -294,7 +302,7 @@ ul { list-style: none; }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 40px;
   padding-bottom: 48px;
 }
@@ -390,7 +398,7 @@ ul { list-style: none; }
 }
 
 /* ============================================
-   ANIMAÇÕES GLOBAIS
+   ANIMACOES GLOBAIS
    ============================================ */
 @keyframes fadeIn {
   from {
@@ -415,13 +423,3 @@ ul { list-style: none; }
   .section-header { margin-bottom: 40px; }
   .hero-stats { gap: 20px; }
 }
-
-/* ============================================
-   IMPORTA OS ESTILOS DAS SESSIONS
-   ============================================ */
-@import './sessions/hero.css';
-@import './sessions/features.css';
-@import './sessions/whyChoose.css';
-@import './sessions/portfolio.css';
-@import './sessions/pricing.css';
-@import './sessions/team.css';

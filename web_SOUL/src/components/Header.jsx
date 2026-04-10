@@ -1,14 +1,27 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
 import { Menu, X } from "lucide-react"
 
-export function Header() {
+export function Header({ onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const handleNavClick = (e, sectionId) => {
+    e.preventDefault()
+    if (onNavigate) {
+      onNavigate(sectionId)
+    }
+    setMobileMenuOpen(false)
+  }
+
+  const scrollToTop = (e) => {
+    e.preventDefault()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setMobileMenuOpen(false)
+  }
 
   return (
     <header className="header">
       <div className="header-inner">
-        <Link to="/" className="header-logo">
+        <a href="#home" className="header-logo" onClick={scrollToTop}>
           <div className="logo-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 2L2 7l10 5 10-5-10-5z" />
@@ -17,13 +30,13 @@ export function Header() {
             </svg>
           </div>
           <span className="logo-text">S.O.U.L</span>
-        </Link>
+        </a>
 
         <nav className="nav-desktop">
-          <Link to="/" className="nav-link">Home</Link>
-          <a href="#equipe" className="nav-link">Sobre Nós</a>
-          <a href="#planos" className="nav-link">Planos</a>
-          <a href="#planos" className="btn-primary">Começar Agora</a>
+          <a href="#home" className="nav-link" onClick={scrollToTop}>Home</a>
+          <a href="#sobre" className="nav-link" onClick={(e) => handleNavClick(e, 'sobre')}>Sobre Nos</a>
+          <a href="#planos" className="nav-link" onClick={(e) => handleNavClick(e, 'planos')}>Planos</a>
+          <a href="#planos" className="btn-primary" onClick={(e) => handleNavClick(e, 'planos')}>Comecar Agora</a>
         </nav>
 
         <button
@@ -37,10 +50,10 @@ export function Header() {
 
       {mobileMenuOpen && (
         <div className="nav-mobile">
-          <Link to="/" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-          <a href="#equipe" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Sobre Nós</a>
-          <a href="#planos" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Planos</a>
-          <a href="#planos" className="btn-primary" onClick={() => setMobileMenuOpen(false)}>Começar Agora</a>
+          <a href="#home" className="nav-link" onClick={scrollToTop}>Home</a>
+          <a href="#sobre" className="nav-link" onClick={(e) => handleNavClick(e, 'sobre')}>Sobre Nos</a>
+          <a href="#planos" className="nav-link" onClick={(e) => handleNavClick(e, 'planos')}>Planos</a>
+          <a href="#planos" className="btn-primary" onClick={(e) => handleNavClick(e, 'planos')}>Comecar Agora</a>
         </div>
       )}
     </header>

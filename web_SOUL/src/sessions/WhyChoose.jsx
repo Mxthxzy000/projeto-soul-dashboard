@@ -3,13 +3,13 @@ import { Shield, Zap, Clock } from "lucide-react"
 const benefits = [
   {
     icon: Shield,
-    title: "Segurança de Dados",
+    title: "Seguranca de Dados",
     description: "Seus dados protegidos com criptografia de ponta a ponta.",
   },
   {
     icon: Zap,
     title: "Alta Performance",
-    description: "Sistema rápido e responsivo para máxima produtividade.",
+    description: "Sistema rapido e responsivo para maxima produtividade.",
   },
   {
     icon: Clock,

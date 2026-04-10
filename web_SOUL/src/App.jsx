@@ -9,18 +9,32 @@ import { TeamSection } from './sessions/Team.jsx'
 import { Footer } from './components/Footer.jsx'
 
 function App() {
+  // Funcao para scroll suave para secao
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   return (
     <>
-      <Header />
+      <Header onNavigate={scrollToSection} />
       <main>
-        <HeroSection />
+        <section id="home">
+          <HeroSection />
+        </section>
         <FeaturesSection />
         <WhyChooseSection />
+        <section id="sobre">
+          <TeamSection />
+        </section>
         <PortfolioSection />
-        <PricingSection />
-        <TeamSection />
+        <section id="planos">
+          <PricingSection />
+        </section>
       </main>
-      <Footer />
+      <Footer onNavigate={scrollToSection} />
     </>
   )
 }
