@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import soullogo from '../../assets/soullogo.png';
 
 function Header() {
   const location = useLocation()
@@ -7,7 +8,7 @@ function Header() {
   return (
     <div className="header-wrapper">
       <header className="header">
-        <div className="header-logo">LOGO</div>
+        <div className="header-logo"><img src={soullogo} className="logo" alt="Logo" /></div>
 
         {!isLoginPage && (
           <Link to="/" className="header-login">

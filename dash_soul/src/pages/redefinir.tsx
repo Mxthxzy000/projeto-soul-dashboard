@@ -1,8 +1,17 @@
+/// <reference types="vite/client" />
+
+declare module '*.png'
+declare module '*.jpg'
+declare module '*.jpeg'
+declare module '*.svg'
+declare module '*.gif'
+
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Header from './components/header'
 import Footer from './components/footer'
 import './global.css'
+import soullogo from '../assets/soullogo.png';
 
 function RecuperarSenha() {
   const [email, setEmail] = useState('')
@@ -65,7 +74,7 @@ function RecuperarSenha() {
       <main className="main-content">
         <div className="form-card">
           <div className="form-header">
-            <div className="form-logo">LOGO</div>
+            <div className="form-logo"><img src={soullogo} className="logo" alt="Logo" /></div>
             <h2 className="form-title">
               {etapa === 1 ? 'Recuperar Senha' : 'Definir Nova Senha'}
             </h2>

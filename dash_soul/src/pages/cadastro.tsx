@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import Header from './components/header'
 import Footer from './components/footer'
 import './global.css'
+import soullogo from '../assets/soullogo.png';
 
 interface FormData {
   nome: string
@@ -77,7 +78,9 @@ function Cadastro() {
       <main className="main-content">
         <div className="form-card">
           <div className="form-header">
-            <div className="form-logo">LOGO</div>
+            <div className="form-logo">
+              <img src={soullogo} className="logo" alt="Logo" />
+            </div>
             <h2 className="form-title">Solicitar Cadastro</h2>
           </div>
 
