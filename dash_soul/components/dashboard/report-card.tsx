@@ -1,14 +1,5 @@
-"use client"
-
-import Link from "next/link"
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts"
+import { Link } from "react-router-dom"
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
 
 const data = [
   { name: "Jan", value: 12000 },
@@ -28,11 +19,9 @@ export function ReportCard() {
         <h2 className="text-lg font-semibold text-gray-900">Relatório</h2>
         <span className="text-sm text-gray-500">Vendas Mensais</span>
       </div>
-
       <div className="mb-4 flex justify-end">
         <span className="text-sm font-medium text-gray-700">R$ 38K</span>
       </div>
-
       <div className="h-32 flex-1">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
@@ -42,33 +31,16 @@ export function ReportCard() {
                 <stop offset="95%" stopColor="#e67e22" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <XAxis
-              dataKey="name"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 10, fill: "#9ca3af" }}
-            />
+            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: "#9ca3af" }} />
             <YAxis hide />
             <Tooltip
-              contentStyle={{
-                backgroundColor: "#fff",
-                border: "1px solid #e5e7eb",
-                borderRadius: "8px",
-                fontSize: "12px",
-              }}
+              contentStyle={{ backgroundColor: "#fff", border: "1px solid #e5e7eb", borderRadius: "8px", fontSize: "12px" }}
               formatter={(value: number) => [`R$ ${value.toLocaleString()}`, "Vendas"]}
             />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="#e67e22"
-              strokeWidth={2}
-              fill="url(#colorValue)"
-            />
+            <Area type="monotone" dataKey="value" stroke="#e67e22" strokeWidth={2} fill="url(#colorValue)" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
-
       <div className="mt-4 flex items-center gap-4 text-xs">
         <div className="flex items-center gap-1">
           <span className="h-2 w-2 rounded-full bg-[#e67e22]"></span>
@@ -82,9 +54,8 @@ export function ReportCard() {
           <span className="text-gray-400">(Pedidos)</span>
         </div>
       </div>
-
       <Link
-        href="/financeiro"
+        to="/financeiro"
         className="mt-auto block w-full rounded-lg bg-[#10b981] py-2.5 text-center text-sm font-medium text-white transition-all duration-200 hover:bg-[#059669] hover:shadow-lg hover:shadow-[#10b981]/30"
       >
         Gerenciar Finanças

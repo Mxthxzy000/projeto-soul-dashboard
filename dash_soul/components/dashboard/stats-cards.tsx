@@ -1,4 +1,3 @@
-"use client"
 
 import { Calendar, Package, TrendingUp, Users } from "lucide-react"
 

@@ -1,7 +1,4 @@
-"use client"
-
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { Link, useLocation } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import {
   LayoutGrid,
@@ -24,40 +21,27 @@ const navItems = [
 ]
 
 export function Sidebar() {
-  const pathname = usePathname()
+  const { pathname } = useLocation()
 
   return (
     <aside className="fixed left-0 top-0 z-40 flex h-screen w-[200px] flex-col bg-[#2d2d2d]">
-      {/* Logo */}
       <div className="flex items-center justify-center p-6">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#3d3d3d]">
-          <svg
-            viewBox="0 0 48 48"
-            className="h-10 w-10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg viewBox="0 0 48 48" className="h-10 w-10" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="24" cy="24" r="20" stroke="#e67e22" strokeWidth="3" fill="none" />
-            <path
-              d="M16 24l6 6 12-12"
-              stroke="#e67e22"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+            <path d="M16 24l6 6 12-12" stroke="#e67e22" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             <circle cx="24" cy="8" r="4" fill="#e67e22" />
           </svg>
         </div>
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navItems.map((item) => {
           const isActive = pathname === item.href
           return (
             <Link
               key={item.name}
-              href={item.href}
+              to={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200",
                 isActive
@@ -72,7 +56,6 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Plan Info */}
       <div className="border-t border-[#3d3d3d] p-4">
         <div className="mb-3 text-sm">
           <p className="font-medium text-white">Plano Atual:</p>

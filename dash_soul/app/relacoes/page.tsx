@@ -1,4 +1,3 @@
-"use client"
 
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout"
 import { Modal } from "@/components/ui/modal"
