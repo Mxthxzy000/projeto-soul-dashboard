@@ -7,7 +7,6 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
   title: 'BitLayer - Dashboard',
   description: 'Sistema de gestão empresarial BitLayer',
-  generator: 'v0.app',
   icons: {
     icon: [
       {
