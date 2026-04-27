@@ -1,27 +1,31 @@
 const team = [
   {
     name: "Luiz Paulo",
-    role: "Full Stack Developer",
+    role: "Product Owner / Dev FullStack",
     initials: "LP",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
+    image: "../luizfoto.png",
+    github: "https://github.com/luixppereira"
   },
   {
     name: "Matheus Quirino",
-    role: "Backend Developer",
+    role: "Scrum Master / Tech Lead",
     initials: "MQ",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face"
+    image: "../matheusfoto.png",
+    github: "https://github.com/Mxthxzy000"
   },
   {
     name: "Otavio Goncalez",
-    role: "Frontend Developer",
+    role: "Dev FullStack / Systems Analyst",
     initials: "OG",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face"
+    image: "../otaviofoto.png",
+    github: "https://github.com/OGoncalez"
   },
   {
     name: "Arthur Andrade",
     role: "UI/UX Designer",
     initials: "AA",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face"
+    image: "../arthurfoto.png",
+    github: "https://github.com/THUrbinando"
   },
 ]
 
@@ -46,8 +50,11 @@ export function TeamSection() {
 
         <div className="team-grid">
           {team.map((member) => (
-            <div
+            <a
               key={member.name}
+              href={member.github}
+              target="_blank"
+              rel="noopener noreferrer"
               className="team-card"
             >
               <div className="team-avatar">
@@ -59,7 +66,7 @@ export function TeamSection() {
               </div>
               <h3 className="team-name">{member.name}</h3>
               <p className="team-role">{member.role}</p>
-            </div>
+            </a>
           ))}
         </div>
       </div>

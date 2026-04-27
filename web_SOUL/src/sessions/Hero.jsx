@@ -37,12 +37,12 @@ export function HeroSection() {
             </p>
 
             <div className="hero-actions">
-              <a href="#planos" className="btn-primary" onClick={scrollToPlanos}>
-                Experimente Gratis
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-              <button className="btn-outline">
-                Ver Demonstracao
+              <a href="/checkout" className="btn-primary">
+  Comece Agora Mesmo!
+  <ArrowRight className="ml-2 h-4 w-4" />
+</a>
+              <button className="btn-outline" onClick={scrollToPlanos}>
+                Planos Disponíveis
               </button>
             </div>
 

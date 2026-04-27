@@ -22,18 +22,12 @@ export function Header({ onNavigate }) {
     <header className="header">
       <div className="header-inner">
         <a href="#home" className="header-logo" onClick={scrollToTop}>
-          <div className="logo-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
-          </div>
-          <span className="logo-text">S.O.U.L</span>
+          <img src="../DashboardSoulLogo.png" alt="S.O.U.L" className="header-logo-img" />
+          <p className="oi">S.O.U.L</p>
         </a>
 
         <nav className="nav-desktop">
-          <a href="#home" className="nav-link" onClick={scrollToTop}>Home</a>
+          <a href="#hero" className="nav-link" onClick={scrollToTop}>Home</a>
           <a href="#sobre" className="nav-link" onClick={(e) => handleNavClick(e, 'sobre')}>Sobre Nos</a>
           <a href="#planos" className="nav-link" onClick={(e) => handleNavClick(e, 'planos')}>Planos</a>
           <a href="#planos" className="btn-primary" onClick={(e) => handleNavClick(e, 'planos')}>Comecar Agora</a>

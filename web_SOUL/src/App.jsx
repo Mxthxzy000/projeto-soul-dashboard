@@ -1,4 +1,5 @@
 // src/App.jsx
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { Header } from './components/Header.jsx'
 import { HeroSection } from './sessions/Hero.jsx'
 import { FeaturesSection } from './sessions/Features.jsx'
@@ -7,8 +8,9 @@ import { PortfolioSection } from './sessions/Portfolio.jsx'
 import { PricingSection } from './sessions/Pricing.jsx'
 import { TeamSection } from './sessions/Team.jsx'
 import { Footer } from './components/Footer.jsx'
+import { CheckoutPage } from './sessions/Checkout.jsx'
 
-function App() {
+function HomePage() {
   // Funcao para scroll suave para secao
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
@@ -36,6 +38,15 @@ function App() {
       </main>
       <Footer onNavigate={scrollToSection} />
     </>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
+    </Routes>
   )
 }
 

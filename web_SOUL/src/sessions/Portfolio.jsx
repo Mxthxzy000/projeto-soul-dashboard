@@ -5,11 +5,13 @@ const projects = [
     type: "Web Application",
     name: "TitanPower Academia",
     description: "Sistema completo para gestao de academias com controle de alunos, planos e treinos.",
+    github: "https://github.com/Mxthxzy000/titanpower-academia"
   },
   {
     type: "E-commerce",
     name: "TechForge E-commerce",
     description: "Plataforma de e-commerce robusta com gestao de produtos, pedidos e pagamentos.",
+    github: "https://github.com/Mxthxzy000/techforge-ecommerce"
   },
 ]
 
@@ -29,8 +31,11 @@ export function PortfolioSection() {
 
         <div className="portfolio-grid">
           {projects.map((project) => (
-            <div
+            <a
               key={project.name}
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
               className="portfolio-card"
             >
               <div className="portfolio-card-header">
@@ -45,7 +50,7 @@ export function PortfolioSection() {
               <p className="portfolio-desc">
                 {project.description}
               </p>
-            </div>
+            </a>
           ))}
         </div>
       </div>

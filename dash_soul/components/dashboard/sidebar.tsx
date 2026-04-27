@@ -24,16 +24,16 @@ export function Sidebar() {
   const { pathname } = useLocation()
 
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen w-[200px] flex-col bg-[#2d2d2d]">
-      <div className="flex items-center justify-center p-6">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#3d3d3d]">
-          <svg viewBox="0 0 48 48" className="h-10 w-10" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="24" cy="24" r="20" stroke="#e67e22" strokeWidth="3" fill="none" />
-            <path d="M16 24l6 6 12-12" stroke="#e67e22" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            <circle cx="24" cy="8" r="4" fill="#e67e22" />
-          </svg>
-        </div>
+  <aside className="fixed left-0 top-0 z-40 flex h-screen w-[200px] flex-col bg-[#2d2d2d]">
+    <div className="flex items-center justify-center p-6">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#3d3d3d]">
+        <img
+          src="../logo_SOUL.png"
+          alt="Logo SOUL"
+          className="h-15 w-15 object-contain"
+        />
       </div>
+    </div>
 
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navItems.map((item) => {

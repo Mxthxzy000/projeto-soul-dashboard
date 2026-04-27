@@ -200,9 +200,9 @@ ul { list-style: none; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(247, 246, 244, 0.95);
+  background: rgba(42, 40, 38, 0.97);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .header-inner {
@@ -241,6 +241,18 @@ ul { list-style: none; }
 
 .logo-icon svg { width: 20px; height: 20px; }
 
+.header-logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
 .logo-text { color: var(--color-text-heading); }
 
 .nav-desktop {
@@ -252,7 +264,7 @@ ul { list-style: none; }
 .nav-link {
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text);
+  color: rgba(255,255,255,0.75);
   transition: color 0.2s;
   text-decoration: none;
 }
@@ -266,20 +278,21 @@ ul { list-style: none; }
   width: 40px;
   height: 40px;
   border-radius: var(--radius-sm);
-  color: var(--color-text-heading);
+  color: rgba(255,255,255,0.75);
   transition: background 0.2s;
 }
 
-.menu-toggle:hover { background: var(--color-surface-2); }
+.menu-toggle:hover { background: var(--color-surface-dark-2); }
 
 .nav-mobile {
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid rgba(255,255,255,0.06);
   padding: 16px 24px 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   max-width: 1140px;
   margin: 0 auto;
+  background: var(--color-surface-dark);
 }
 
 @media (max-width: 768px) {
@@ -333,6 +346,10 @@ ul { list-style: none; }
   font-size: 14px;
   color: var(--color-text-dark-muted);
   line-height: 1.7;
+}
+
+.oi {
+  color: #fff;
 }
 
 .footer-contacts {

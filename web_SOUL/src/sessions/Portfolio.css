@@ -28,6 +28,10 @@
 }
 
 .portfolio-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
   background: var(--color-surface-dark-2);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: var(--radius-xl);
