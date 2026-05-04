@@ -1,11 +1,19 @@
-import { Mail, Phone, MapPin } from "lucide-react"
+import { Mail, Phone, MapPin, Send } from "lucide-react"
+import { useState } from "react"
 
 export function Footer({ onNavigate }) {
-  const handleNavClick = (e, sectionId) => {
+  const [form, setForm] = useState({ email: "", titulo: "", mensagem: "" })
+  const [sent, setSent] = useState(false)
+
+  const handleChange = (e) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const handleSubmit = (e) => {
     e.preventDefault()
-    if (onNavigate) {
-      onNavigate(sectionId)
-    }
+    setSent(true)
+    setForm({ email: "", titulo: "", mensagem: "" })
+    setTimeout(() => setSent(false), 4000)
   }
 
   const scrollToTop = (e) => {
@@ -17,6 +25,7 @@ export function Footer({ onNavigate }) {
     <footer className="footer">
       <div className="container">
         <div className="footer-grid">
+          {/* Brand */}
           <div className="footer-brand">
             <div className="footer-logo">
               <img src="/BitLayerLogo.png" alt="BitLayer" className="footer-logo-img" />
@@ -41,22 +50,49 @@ export function Footer({ onNavigate }) {
             </div>
           </div>
 
-          <div className="footer-col">
-            <h3 className="footer-col-title">Navegacao</h3>
-            <nav className="footer-nav">
-              <a href="#home" className="footer-link" onClick={scrollToTop}>Home</a>
-              <a href="#sobre" className="footer-link" onClick={(e) => handleNavClick(e, 'sobre')}>Sobre Nos</a>
-              <a href="#planos" className="footer-link" onClick={(e) => handleNavClick(e, 'planos')}>Planos</a>
-            </nav>
-          </div>
-
-          <div className="footer-col">
-            <h3 className="footer-col-title">Nossos Planos</h3>
-            <nav className="footer-nav">
-              <a href="#planos" className="footer-link" onClick={(e) => handleNavClick(e, 'planos')}>Essencial - R$ 250/mes</a>
-              <a href="#planos" className="footer-link" onClick={(e) => handleNavClick(e, 'planos')}>Profissional - R$ 600/mes</a>
-              <a href="#planos" className="footer-link" onClick={(e) => handleNavClick(e, 'planos')}>Enterprise - R$ 1.250/mes</a>
-            </nav>
+          {/* Formulário de suporte */}
+          <div className="footer-support">
+            <h3 className="footer-col-title">Fale com o Suporte</h3>
+            {sent ? (
+              <div className="footer-support-success">
+                <Send size={18} />
+                <span>Mensagem enviada! Retornaremos em breve.</span>
+              </div>
+            ) : (
+              <form className="footer-support-form" onSubmit={handleSubmit}>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Seu e-mail"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                  className="footer-input"
+                />
+                <input
+                  type="text"
+                  name="titulo"
+                  placeholder="Titulo da mensagem"
+                  value={form.titulo}
+                  onChange={handleChange}
+                  required
+                  className="footer-input"
+                />
+                <textarea
+                  name="mensagem"
+                  placeholder="Sua mensagem..."
+                  value={form.mensagem}
+                  onChange={handleChange}
+                  required
+                  rows={4}
+                  className="footer-input footer-textarea"
+                />
+                <button type="submit" className="footer-send-btn">
+                  <Send size={15} />
+                  Enviar mensagem
+                </button>
+              </form>
+            )}
           </div>
         </div>
 

@@ -9,6 +9,7 @@ import './sessions/Portfolio.css'
 import './sessions/Pricing.css'
 import './sessions/Team.css'
 import './sessions/Checkout.css'
+import './sessions/Account.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(

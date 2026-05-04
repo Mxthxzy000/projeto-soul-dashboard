@@ -9,9 +9,9 @@ import { PricingSection } from './sessions/Pricing.jsx'
 import { TeamSection } from './sessions/Team.jsx'
 import { Footer } from './components/Footer.jsx'
 import { CheckoutPage } from './sessions/Checkout.jsx'
+import { AccountPage } from './sessions/Account.jsx'
 
 function HomePage() {
-  // Funcao para scroll suave para secao
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
     if (element) {
@@ -46,6 +46,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/checkout" element={<CheckoutPage />} />
+      <Route path="/conta" element={<AccountPage />} />
     </Routes>
   )
 }
