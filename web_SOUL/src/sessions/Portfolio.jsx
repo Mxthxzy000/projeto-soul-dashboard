@@ -1,17 +1,17 @@
-import { ExternalLink, BarChart3 } from "lucide-react"
+import { BarChart3 } from "lucide-react"
 
 const projects = [
   {
     type: "Web Application",
     name: "TitanPower Academia",
-    description: "Sistema completo para gestao de academias com controle de alunos, planos e treinos.",
-    github: "https://github.com/Mxthxzy000/titanpower-academia"
+    description: "Sistema completo para gestão de academias com controle de alunos, planos e treinos.",
+    video: "/videotitanpower.mp4",
   },
   {
     type: "E-commerce",
     name: "TechForge E-commerce",
-    description: "Plataforma de e-commerce robusta com gestao de produtos, pedidos e pagamentos.",
-    github: "https://github.com/Mxthxzy000/techforge-ecommerce"
+    description: "Plataforma de e-commerce robusta com gestão de produtos, pedidos e pagamentos.",
+    video: "/videotechforge.mp4",
   },
 ]
 
@@ -31,26 +31,30 @@ export function PortfolioSection() {
 
         <div className="portfolio-grid">
           {projects.map((project) => (
-            <a
-              key={project.name}
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="portfolio-card"
-            >
+            <div key={project.name} className="portfolio-card">
               <div className="portfolio-card-header">
                 <span className="portfolio-type">
                   {project.type}
                 </span>
-                <ExternalLink className="portfolio-link-icon h-5 w-5" />
               </div>
+
               <h3 className="portfolio-name">
                 {project.name}
               </h3>
+
+              <video
+                className="portfolio-video"
+                src={project.video}
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+
               <p className="portfolio-desc">
                 {project.description}
               </p>
-            </a>
+            </div>
           ))}
         </div>
       </div>

@@ -477,6 +477,10 @@ ul { list-style: none; }
   line-height: 1.5;
 }
 
+.footer-logo-img{
+  height: 40px;
+}
+
 .footer-send-btn {
   display: inline-flex;
   align-items: center;
