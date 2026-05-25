@@ -36,26 +36,27 @@ export function TeamSection() {
         <div className="section-header">
           <div className="section-badge">
             <span className="badge-code">{"</>"}</span>
-            <span>Conheca nossa equipe</span>
+            <span>Conheça nossa equipe</span>
           </div>
           <h2 className="section-title">
             Somos a{" "}
             <span className="text-accent">BitLayer</span>
           </h2>
           <p className="section-desc">
-            Uma equipe apaixonada por tecnologia, criando solucoes digitais que
-            transformam negocios e impulsionam resultados.
+            Uma equipe apaixonada por tecnologia, criando soluções digitais que
+            transformam negócios e impulsionam resultados.
           </p>
         </div>
 
         <div className="team-grid">
-          {team.map((member) => (
+          {team.map((member, index) => (
             <a
               key={member.name}
               href={member.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="team-card"
+              className={`team-card card-animate-up card-hover-scale`}
+              style={{ animationDelay: `${index * 0.12}s` }}
             >
               <div className="team-avatar">
                 {member.image ? (

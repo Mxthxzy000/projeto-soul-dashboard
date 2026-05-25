@@ -10,11 +10,11 @@ const plans = [
     name: "Essencial",
     price: 250,
     features: [
-      "Dashboard basico",
-      "Gestao de estoque",
-      "Controle de funcionarios",
-      "Agenda integrada",
-      "Relatorios mensais",
+        "Dashboard básico",
+        "Gestão de estoque",
+        "Controle de funcionários",
+        "Agenda integrada",
+        "Relatórios mensais",
     ],
   },
   {
@@ -23,10 +23,10 @@ const plans = [
     price: 600,
     features: [
       "Tudo do Essencial",
-      "Dashboard avancado",
-      "Gestao de transporte",
-      "Relatorios em tempo real",
-      "Suporte prioritario",
+        "Dashboard avançado",
+        "Gestão de transporte",
+        "Relatórios em tempo real",
+        "Suporte prioritário",
     ],
   },
   {
@@ -35,10 +35,10 @@ const plans = [
     price: 1250,
     features: [
       "Tudo do Profissional",
-      "Usuarios ilimitados",
-      "API personalizada",
-      "Integracoes avancadas",
-      "Gerente de conta dedicado",
+        "Usuários ilimitados",
+        "API personalizada",
+        "Integrações avançadas",
+        "Gerente de conta dedicado",
     ],
   },
 ]
@@ -151,42 +151,46 @@ export function CheckoutPage() {
       <Header onNavigate={scrollToSection} />
       <main className="checkout-main">
         {/* Banner de Seguranca */}
-        <div className="checkout-security-banner">
+        <section className="checkout-banner">
           <div className="container">
             <div className="security-content">
-              <div className="security-left">
-                <div className="security-icon">
-                  <Shield size={24} />
-                </div>
-                <div className="security-text">
-                  <h3>Compra 100% Segura</h3>
-                  <p>Seus dados estao protegidos com criptografia SSL</p>
+              <div className="security-icon">
+                <Shield size={28} />
+              </div>
+              <div className="security-text">
+                <h3>Compra 100% Segura</h3>
+                <p>Seus dados estão protegidos com criptografia SSL</p>
+              </div>
+            </div>
+
+            <div className="security-badges">
+              <div className="security-badge">
+                <Download size={16} />
+                <div className="security-badge-text">
+                  <strong>Pagamento protegido</strong>
+                  <span>Criptografia SSL em toda a transação</span>
                 </div>
               </div>
-              <div className="security-right">
-                <div className="security-badge">
-                  <Download size={16} />
-                  <span>Download imediato</span>
-                </div>
-                <div className="security-badge">
-                  <Headphones size={16} />
-                  <span>Suporte incluso</span>
+              <div className="security-badge">
+                <Headphones size={16} />
+                <div className="security-badge-text">
+                  <strong>Suporte Incluso</strong>
+                  <span>Equipe disponível em até 24h</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Conteudo Principal */}
-        <div className="checkout-container">
+        <section className="checkout-content">
           <div className="container">
             <div className="checkout-grid">
               {/* Formulario */}
-              <div className="checkout-form-wrapper">
-                <div className="checkout-form-card">
+              <div className="checkout-form-card">
                   <div className="form-header">
                     <CreditCard size={20} />
-                    <h2>Finalizar Compra</h2>
+                        <span>Contato da equipe de suporte em até 24h para auxiliar na instalação</span>
                   </div>
 
                   <form onSubmit={handleSubmit}>
@@ -238,7 +242,7 @@ export function CheckoutPage() {
                           />
                         </div>
                         <div className="form-group">
-                          <label htmlFor="email">Email Corporativo</label>
+                          <label htmlFor="email">E-mail corporativo</label>
                           <input
                             type="email"
                             id="email"
@@ -328,7 +332,6 @@ export function CheckoutPage() {
                     </button>
                   </form>
                 </div>
-              </div>
 
               {/* Resumo do Pedido */}
               <div className="checkout-summary">
@@ -360,7 +363,7 @@ export function CheckoutPage() {
                       <span>R$ {currentPlan.price.toLocaleString("pt-BR")},00</span>
                     </div>
                     <div className="summary-row">
-                      <span>Instalacao</span>
+                      <span>Instalação</span>
                       <span className="summary-highlight">Gratis</span>
                     </div>
                     <div className="summary-row">
@@ -385,7 +388,7 @@ export function CheckoutPage() {
                       </li>
                       <li>
                         <Headphones size={14} />
-                        <span>Contato da equipe de suporte em ate 24h para auxiliar na instalacao</span>
+                        <span>Contato da equipe de suporte em até 24h para auxiliar na instalação</span>
                       </li>
                     </ul>
                   </div>
@@ -393,7 +396,7 @@ export function CheckoutPage() {
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </main>
       <Footer onNavigate={scrollToSection} />
 
@@ -431,12 +434,12 @@ export function CheckoutPage() {
                   navigate("/")
                 }}
               >
-                Voltar para o Inicio
+                Voltar para o Início
               </button>
             </div>
             
             <p className="modal-note">
-              Voce tambem recebera um email com as instrucoes de instalacao.
+              Você também receberá um e-mail com as instruções de instalação.
             </p>
           </div>
         </div>

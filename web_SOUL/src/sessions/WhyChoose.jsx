@@ -3,13 +3,13 @@ import { Shield, Zap, Clock } from "lucide-react"
 const benefits = [
   {
     icon: Shield,
-    title: "Seguranca de Dados",
-    description: "Seus dados protegidos com criptografia de ponta a ponta.",
+    title: "Segurança de Dados",
+    description: "Seus dados protegidos com criptografia de ponta à ponta.",
   },
   {
     icon: Zap,
     title: "Alta Performance",
-    description: "Sistema rapido e responsivo para maxima produtividade.",
+    description: "Sistema rápido e responsivo para máxima produtividade.",
   },
   {
     icon: Clock,
@@ -25,13 +25,13 @@ export function WhyChooseSection() {
         <div className="section-header">
           <h2 className="section-title">
             Por que escolher a{" "}
-            <span className="text-accent">BitLayer</span>?
+            <span className="text-accent">S.O.U.L</span>?
           </h2>
         </div>
 
         <div className="why-grid">
-          {benefits.map((benefit) => (
-            <div key={benefit.title} className="why-card">
+          {benefits.map((benefit, index) => (
+            <div key={benefit.title} className={`why-card card-animate-left card-hover-lift`} style={{ animationDelay: `${index * 0.14}s` }}>
               <div className="why-icon">
                 <benefit.icon className="h-8 w-8" />
               </div>

@@ -5,32 +5,32 @@
   const plans = [
     {
       name: "Essencial",
-      description: "Ideal para pequenas empresas que estao comecando a digitalizar sua gestao.",
+      description: "Ideal para pequenas empresas que estão começando a digitalizar sua gestão.",
       price: "250",
       features: [
-        "Dashboard basico",
-        "Gestao de estoque",
-        "Controle de funcionarios",
+        "Dashboard básico",
+        "Gestão de estoque",
+        "Controle de funcionários",
         "Agenda integrada",
-        "Relatorios mensais",
+        "Relatórios mensais",
         "Suporte por email",
       ],
-      cta: "Comecar Agora",
+      cta: "Começar Agora",
       popular: false,
       slug: "essencial",
     },
     {
       name: "Profissional",
-      description: "Para empresas em crescimento que precisam de recursos avancados.",
+      description: "Para empresas em crescimento que precisam de recursos avançados.",
       price: "600",
       features: [
         "Tudo do plano Essencial",
-        "Gestao de logistica",
+        "Gestão de logística",
         "Controle financeiro completo",
-        "Relatorios personalizados",
-        "Multi-usuarios (ate 10)",
-        "Suporte prioritario",
-        "Integracoes basicas",
+        "Relatórios personalizados",
+        "Multi-usuários (até 10)",
+        "Suporte prioritário",
+        "Integrações básicas",
         "App mobile",
       ],
       cta: "Escolher Profissional",
@@ -39,17 +39,17 @@
     },
     {
       name: "Enterprise",
-      description: "Solucao completa para grandes empresas e industrias.",
+      description: "Solução completa para grandes empresas e indústrias.",
       price: "1.250",
       features: [
         "Tudo do plano Profissional",
-        "Usuarios ilimitados",
+        "Usuários ilimitados",
         "API personalizada",
-        "Integracoes avancadas",
+        "Integrações avançadas",
         "Treinamento da equipe",
         "Gerente de conta dedicado",
         "SLA garantido",
-        "Customizacoes exclusivas",
+        "Customizações exclusivas",
         "Backup em tempo real",
       ],
       cta: "Falar com Vendas",
@@ -71,19 +71,20 @@
           <div className="section-header">
             <h2 className="section-title">
               Planos que cabem no seu{" "}
-              <span className="text-accent">orcamento</span>
+              <span className="text-accent">orçamento</span>
             </h2>
             <p className="section-desc">
               Escolha o plano ideal para o tamanho da sua empresa. Todos incluem
-              atualizacoes gratuitas e suporte tecnico.
+              atualizações gratuitas e suporte técnico.
             </p>
           </div>
 
           <div className="pricing-grid">
-            {plans.map((plan) => (
+            {plans.map((plan, index) => (
               <div
                 key={plan.name}
-                className={`pricing-card ${plan.popular ? "pricing-card--popular" : ""}`}
+                className={`pricing-card ${plan.popular ? "pricing-card--popular" : ""} card-animate-up card-hover-scale`}
+                style={{ animationDelay: `${index * 0.12}s` }}
               >
                 {plan.popular && (
                   <div className="popular-badge">

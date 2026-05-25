@@ -10,6 +10,7 @@ import { TeamSection } from './sessions/Team.jsx'
 import { Footer } from './components/Footer.jsx'
 import { CheckoutPage } from './sessions/Checkout.jsx'
 import { AccountPage } from './sessions/Account.jsx'
+import { LoginPage } from './sessions/Login.jsx'
 
 function HomePage() {
   const scrollToSection = (sectionId) => {
@@ -31,7 +32,6 @@ function HomePage() {
         <section id="sobre">
           <TeamSection />
         </section>
-        <PortfolioSection />
         <section id="planos">
           <PricingSection />
         </section>
@@ -47,6 +47,7 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/conta" element={<AccountPage />} />
+      <Route path="/login" element={<LoginPage />} />
     </Routes>
   )
 }

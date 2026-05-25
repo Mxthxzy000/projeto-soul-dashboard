@@ -5,37 +5,37 @@ const features = [
     icon: BarChart3,
     title: "Dashboards Inteligentes",
     description:
-      "Visualize todos os dados do seu negocio em tempo real com graficos interativos e metricas personalizaveis.",
+      "Visualize todos os dados do seu negócio em tempo real com gráficos interativos e métricas personalizáveis.",
   },
   {
     icon: Truck,
-    title: "Gestao de Logistica",
+    title: "Gestão de Logística",
     description:
-      "Controle total do transporte, rastreamento de entregas e gestao de frota em uma unica plataforma.",
+      "Controle total do transporte, rastreamento de entregas e gestão de frota em uma única plataforma.",
   },
   {
     icon: Users,
-    title: "Gestao de Equipe",
+    title: "Gestão de Equipe",
     description:
-      "Gerencie funcionarios, controle ponto, escalas e produtividade com facilidade.",
+      "Gerencie funcionários, controle ponto, escalas e produtividade com facilidade.",
   },
   {
     icon: Calendar,
     title: "Agenda Integrada",
     description:
-      "Organize reunioes, tarefas e compromissos com notificacoes automaticas para toda a equipe.",
+      "Organize reuniões, tarefas e compromissos com notificações automáticas para toda a equipe.",
   },
   {
     icon: Package,
     title: "Controle de Estoque",
     description:
-      "Monitore niveis de estoque, alertas de reposicao e historico de movimentacoes.",
+      "Monitore níveis de estoque, alertas de reposição e histórico de movimentações.",
   },
   {
     icon: FileText,
-    title: "Relatorios Detalhados",
+    title: "Relatórios Detalhados",
     description:
-      "Gere relatorios personalizados com analises financeiras, operacionais e de desempenho.",
+      "Gere relatórios personalizados com análises financeiras, operacionais e de desempenho.",
   },
 ]
 
@@ -48,19 +48,20 @@ export function FeaturesSection() {
             Tudo que sua empresa{" "}
             <br className="hidden sm:inline" />
             precisa em{" "}
-            <span className="text-accent">um so lugar</span>
+            <span className="text-accent">um só lugar</span>
           </h2>
           <p className="section-desc">
-            Ferramentas poderosas para administracao, logistica e supervisao que
-            transformam a gestao do seu negocio.
+            Ferramentas poderosas para administração, logística e supervisão que
+            transformam a gestão do seu negócio.
           </p>
         </div>
 
         <div className="features-grid">
-          {features.map((feature) => (
+          {features.map((feature, index) => (
             <div
               key={feature.title}
-              className="feature-card"
+              className={`feature-card card-animate-up card-hover-lift`}
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="feature-icon">
                 <feature.icon className="w-6 h-6" />

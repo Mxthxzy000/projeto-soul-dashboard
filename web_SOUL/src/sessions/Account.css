@@ -767,3 +767,205 @@
 @media (max-width: 480px) {
   .account-stats-row { grid-template-columns: 1fr; }
 }
+
+/* ============================================
+   MODAL DE PAGAMENTO (adicionado)
+   ============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  animation: slideUp 0.25s ease;
+}
+
+.modal-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-heading);
+  margin-bottom: 24px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.modal-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-row label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.modal-row input {
+  padding: 11px 14px;
+  font-size: 14px;
+  color: var(--color-text-heading);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.modal-row input:focus {
+  border-color: var(--color-accent);
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* Botões genéricos (se já existirem no projeto, podem ser removidos daqui) */
+.btn-outline,
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.btn-outline:hover {
+  background: var(--color-surface-2);
+  border-color: var(--color-accent);
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(243,133,18,0.3);
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  box-shadow: 0 4px 16px rgba(243,133,18,0.4);
+}
+
+.plan-modal {
+  padding: 32px;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+.plan-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+.plan-card {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.plan-card--current {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
+.plan-card h4 {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
+}
+.plan-card-price {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-text-heading);
+}
+.plan-card-price span {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  text-align: left;
+  flex: 1;
+}
+.plan-card ul li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: var(--color-text);
+}
+
+.account-status-badge--inactive {
+  background: rgba(156, 163, 175, 0.15);
+  color: #9ca3af;
+  border: 1px solid rgba(156, 163, 175, 0.25);
+}
+
+/* Animações do modal */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsividade do modal */
+@media (max-width: 480px) {
+  .modal-card {
+    padding: 24px;
+  }
+}

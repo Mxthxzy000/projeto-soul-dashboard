@@ -22,7 +22,7 @@ export function PortfolioSection() {
         <div className="section-header">
           <div className="section-badge">
             <BarChart3 className="h-4 w-4" />
-            <span>Nosso Portfolio</span>
+            <span>Nosso Portfólio</span>
           </div>
           <h2 className="section-title">
             Projetos que entregamos
@@ -30,8 +30,8 @@ export function PortfolioSection() {
         </div>
 
         <div className="portfolio-grid">
-          {projects.map((project) => (
-            <div key={project.name} className="portfolio-card">
+          {projects.map((project, index) => (
+            <div key={project.name} className={`portfolio-card card-animate-right card-hover-glow`} style={{ animationDelay: `${index * 0.12}s` }}>
               <div className="portfolio-card-header">
                 <span className="portfolio-type">
                   {project.type}

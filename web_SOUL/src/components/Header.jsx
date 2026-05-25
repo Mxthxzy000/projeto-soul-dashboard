@@ -1,9 +1,11 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Menu, X, UserCircle } from "lucide-react"
 import { useNavigate, useLocation } from "react-router-dom"
+import { supabase } from "../lib/supabase.js"
 
 export function Header({ onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [user, setUser] = useState(null)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -49,6 +51,45 @@ export function Header({ onNavigate }) {
     navigate("/conta")
   }
 
+  const goToLogin = (e) => {
+    e.preventDefault()
+    setMobileMenuOpen(false)
+    navigate("/login")
+  }
+
+  const handleLogout = async (e) => {
+    e && e.preventDefault()
+    await supabase.auth.signOut()
+    setUser(null)
+    setMobileMenuOpen(false)
+    navigate('/')
+  }
+
+  useEffect(() => {
+    // Obter sessão atual do Supabase
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        setUser(session.user)
+      } else {
+        setUser(null)
+      }
+    }
+
+    getSession()
+
+    // Escutar mudanças de autenticação
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        setUser(session.user)
+      } else {
+        setUser(null)
+      }
+    })
+
+    return () => subscription?.unsubscribe()
+  }, [])
+
   return (
     <header className="header">
       <div className="header-inner">
@@ -59,13 +100,23 @@ export function Header({ onNavigate }) {
 
         <nav className="nav-desktop">
           <a href="/" className="nav-link" onClick={handleHome}>Home</a>
-          <a href="#sobre" className="nav-link" onClick={(e) => handleNavClick(e, "sobre")}>Sobre Nos</a>
+          <a href="#sobre" className="nav-link" onClick={(e) => handleNavClick(e, "sobre")}>Sobre Nós</a>
           <a href="#planos" className="nav-link" onClick={(e) => handleNavClick(e, "planos")}>Planos</a>
-          <a href="/conta" className="nav-link nav-link--account" onClick={goToAccount}>
-            <UserCircle size={17} />
-            Minha Conta
-          </a>
-          <a href="#planos" className="btn-primary" onClick={(e) => handleNavClick(e, "planos")}>Comecar Agora</a>
+          {user ? (
+            <>
+              <a href="/conta" className="nav-link nav-link--account" onClick={goToAccount}>
+                <UserCircle size={17} />
+                Minha Conta
+              </a>
+              <a href="#" className="nav-link" onClick={handleLogout}>Sair</a>
+            </>
+          ) : (
+            <a href="/login" className="nav-link nav-link--account" onClick={goToLogin}>
+              <UserCircle size={17} />
+              Entrar
+            </a>
+          )}
+          <a href="#planos" className="btn-primary" onClick={(e) => handleNavClick(e, "planos")}>Começar Agora</a>
         </nav>
 
         <button
@@ -80,13 +131,23 @@ export function Header({ onNavigate }) {
       {mobileMenuOpen && (
         <div className="nav-mobile">
           <a href="/" className="nav-link" onClick={handleHome}>Home</a>
-          <a href="#sobre" className="nav-link" onClick={(e) => handleNavClick(e, "sobre")}>Sobre Nos</a>
+          <a href="#sobre" className="nav-link" onClick={(e) => handleNavClick(e, "sobre")}>Sobre Nós</a>
           <a href="#planos" className="nav-link" onClick={(e) => handleNavClick(e, "planos")}>Planos</a>
-          <a href="/conta" className="nav-link nav-link--account" onClick={goToAccount}>
-            <UserCircle size={17} />
-            Minha Conta
-          </a>
-          <a href="#planos" className="btn-primary" onClick={(e) => handleNavClick(e, "planos")}>Comecar Agora</a>
+          {user ? (
+            <>
+              <a href="/conta" className="nav-link nav-link--account" onClick={goToAccount}>
+                <UserCircle size={17} />
+                Minha Conta
+              </a>
+              <a href="#" className="nav-link" onClick={handleLogout}>Sair</a>
+            </>
+          ) : (
+            <a href="/login" className="nav-link nav-link--account" onClick={goToLogin}>
+              <UserCircle size={17} />
+              Entrar
+            </a>
+          )}
+          <a href="#planos" className="btn-primary" onClick={(e) => handleNavClick(e, "planos")}>Começar Agora</a>
         </div>
       )}
     </header>

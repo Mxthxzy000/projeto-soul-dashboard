@@ -31,8 +31,8 @@ export function Footer({ onNavigate }) {
               <img src="/BitLayerLogo.png" alt="BitLayer" className="footer-logo-img" />
             </div>
             <p className="footer-tagline">
-              Sistema completo de gestao empresarial para administracao, logistica
-              e supervisao. Transforme seu negocio com tecnologia.
+              Sistema completo de gestão empresarial para administração, logística
+              e supervisão. Transforme seu negócio com tecnologia.
             </p>
             <div className="footer-contacts">
               <div className="footer-contact">
@@ -72,7 +72,7 @@ export function Footer({ onNavigate }) {
                 <input
                   type="text"
                   name="titulo"
-                  placeholder="Titulo da mensagem"
+                  placeholder="Título da mensagem"
                   value={form.titulo}
                   onChange={handleChange}
                   required
@@ -97,7 +97,7 @@ export function Footer({ onNavigate }) {
         </div>
 
         <div className="footer-bottom">
-          <p>2026 BitLayer. Todos os direitos reservados. | Cacapava-SP</p>
+          <p>2026 BitLayer. Todos os direitos reservados. | Caçapava - SP</p>
           <div className="footer-bottom-links">
             <a href="#" className="footer-link">Termos de Uso</a>
             <a href="#" className="footer-link">Privacidade</a>

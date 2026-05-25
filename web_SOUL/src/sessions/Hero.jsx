@@ -20,19 +20,19 @@ export function HeroSection() {
           <div className="hero-content">
             <div className="hero-badge">
               <Clock className="h-4 w-4" />
-              <span>Sistema completo de gestao empresarial</span>
+              <span>Sistema completo de gestão empresarial</span>
             </div>
 
             <h1 className="hero-title">
-              Gestao Inteligente{" "}
+              Gestão Inteligente{" "}
               <br />
               para sua{" "}
               <span className="text-accent">Empresa</span>
             </h1>
 
             <p className="hero-desc">
-              Transforme a administracao, logistica e supervisao do seu negocio com
-              dashboards visuais e ferramentas poderosas. Tudo em uma unica
+              Transforme a administração, logística e supervisão do seu negócio com
+              dashboards visuais e ferramentas poderosas. Tudo em uma única
               plataforma.
             </p>
 
@@ -54,7 +54,7 @@ export function HeroSection() {
               </div>
               <div>
                 <p className="stat-number">98%</p>
-                <p className="stat-label">Satisfacao</p>
+                <p className="stat-label">Satisfação</p>
               </div>
               <div>
                 <p className="stat-number">24/7</p>
@@ -69,7 +69,7 @@ export function HeroSection() {
               {!imageError ? (
                 <img 
                   src="/dashboard-preview.png" 
-                  alt="Dashboard S.O.U.L - Sistema de Gestao Empresarial"
+                  alt="Dashboard S.O.U.L - Sistema de Gestão Empresarial"
                   className="dashboard-image"
                   onError={() => setImageError(true)}
                 />
@@ -89,33 +89,33 @@ export function HeroSection() {
             </div>
 
             {/* Floating Cards */}
-            <div className="floating-card card-top">
+            <div className="floating-card card-top floating card-animate-scale card-hover-glow" style={{ animationDelay: '0.2s' }}>
               <div className="float-icon float-icon--orange">
                 <BarChart3 className="h-4 w-4" />
               </div>
               <div>
-                <p className="float-title">Relatorios</p>
+                <p className="float-title">Relatórios</p>
                 <p className="float-sub">Em tempo real</p>
               </div>
             </div>
 
-            <div className="floating-card card-right">
+            <div className="floating-card card-right card-animate-up card-hover-lift" style={{ animationDelay: '0.35s' }}>
               <div className="float-icon float-icon--orange">
                 <Truck className="h-4 w-4" />
               </div>
               <div>
-                <p className="float-title">Logistica</p>
+                <p className="float-title">Logística</p>
                 <p className="float-sub">Rastreamento</p>
               </div>
             </div>
 
-            <div className="floating-card card-bottom">
+            <div className="floating-card card-bottom card-animate-right card-hover-lift" style={{ animationDelay: '0.45s' }}>
               <div className="float-icon float-icon--orange">
                 <Users className="h-4 w-4" />
               </div>
               <div>
                 <p className="float-title">Equipe</p>
-                <p className="float-sub">Gestao completa</p>
+                <p className="float-sub">Gestão completa</p>
               </div>
             </div>
           </div>
