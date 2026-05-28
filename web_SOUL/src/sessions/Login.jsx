@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import Swal from "sweetalert2"
 import { Header } from "../components/Header.jsx"
@@ -55,6 +55,17 @@ export function LoginPage() {
   const [error, setError] = useState("")
   const [mode, setMode] = useState("login") // "login" ou "signup"
 
+  // NOVA REGRA: Redireciona imediatamente se já estiver logado
+  useEffect(() => {
+    const checkUserStatus = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        navigate("/conta");
+      }
+    };
+    checkUserStatus();
+  }, [navigate]);
+
   const handleChange = (e) => {
     const { name, value } = e.target
     let newValue = value
@@ -81,7 +92,7 @@ export function LoginPage() {
     const phoneNumerico = form.phone.replace(/\D/g, "")
 
     try {
-        if (mode === "login") {
+      if (mode === "login") {
         const { data, error: authError } = await supabase.auth.signInWithPassword({
           email: form.email,
           password: form.password,

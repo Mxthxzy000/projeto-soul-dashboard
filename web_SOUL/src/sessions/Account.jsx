@@ -5,6 +5,7 @@ import { Footer } from "../components/Footer.jsx"
 import { supabase } from "../lib/supabase.js"
 import Swal from "sweetalert2"
 import jsPDF from "jspdf"
+import CryptoJS from "crypto-js"
 import {
   User, CreditCard, Calendar, Shield, ChevronRight,
   CheckCircle, AlertCircle, ArrowUpRight, LogOut, Bell,
@@ -159,6 +160,20 @@ export function AccountPage() {
     const plan = planDetails[planSlug]
     if (!plan) return
 
+    // BLOQUEAR SE NÃO TIVER FEITO CHECKOUT ANTES
+    if (!userData.paymentMethod) {
+      setShowPlanModal(false);
+      await Swal.fire({
+        title: "Checkout necessário",
+        text: "Você precisa preencher os dados da empresa e adicionar uma forma de pagamento no checkout antes de ativar o plano.",
+        icon: "info",
+        confirmButtonText: "Ir para o Checkout",
+        confirmButtonColor: planColors[planSlug] || "#8B5CF6",
+      });
+      navigate(`/checkout?plano=${planSlug}`);
+      return;
+    }
+
     const currentPlan = userData.planSlug ? planDetails[userData.planSlug] : null
     const isUpgrade = currentPlan && plan.price > currentPlan.price
     const isDowngrade = currentPlan && plan.price < currentPlan.price
@@ -213,9 +228,6 @@ export function AccountPage() {
           plan_slug: planSlug,
           subscription_start: hoje.toISOString().split("T")[0],
           next_billing: proxCobranca.toISOString().split("T")[0],
-          payment_method: {
-            type: "credit_card", brand: "Visa", last4: "4242", expiry: "08/27",
-          },
         }
 
         newState = {
@@ -225,9 +237,6 @@ export function AccountPage() {
           planPrice: plan.price,
           subscriptionStart: hoje.toISOString().split("T")[0],
           nextBilling: proxCobranca.toISOString().split("T")[0],
-          paymentMethod: {
-            type: "credit_card", brand: "Visa", last4: "4242", expiry: "08/27",
-          },
           invoices: [
             {
               id: `FAT-${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, "0")}`,
@@ -238,6 +247,9 @@ export function AccountPage() {
             ...userData.invoices,
           ],
         }
+        
+        updateData.invoices = newState.invoices;
+
       } else if (isUpgrade) {
         updateData = {
           plan_slug: planSlug,
@@ -258,6 +270,9 @@ export function AccountPage() {
             ...userData.invoices,
           ],
         }
+        
+        updateData.invoices = newState.invoices;
+
       } else if (isDowngrade) {
         Swal.fire("Agendado!", `Seu plano será alterado para ${plan.name} em ${formatDate(userData.nextBilling)}.`, "success")
         setShowPlanModal(false)
@@ -304,7 +319,6 @@ export function AccountPage() {
           plan_slug: null,
           subscription_start: null,
           next_billing: null,
-          payment_method: null,
         })
         .eq("id", session.user.id)
 
@@ -318,8 +332,6 @@ export function AccountPage() {
         planPrice: 0,
         subscriptionStart: null,
         nextBilling: null,
-        paymentMethod: null,
-        invoices: [],
       }))
 
       Swal.fire("Cancelada", "Sua assinatura foi cancelada.", "success")
@@ -388,14 +400,19 @@ export function AccountPage() {
   const openPaymentModal = () => {
     if (userData.paymentMethod) {
       setPaymentForm({
-        brand: userData.paymentMethod.brand,
-        number: maskCardNumber(`411111111111${userData.paymentMethod.last4}`),
-        expiry: userData.paymentMethod.expiry,
+        brand: userData.paymentMethod.brand || "Visa",
+        // Mostra a máscara correta baseada no DB
+        number: `•••• •••• •••• ${userData.paymentMethod.last4}`,
+        expiry: userData.paymentMethod.expiry || "",
       })
+    } else {
+      setPaymentForm({ brand: "Visa", number: "", expiry: "" })
     }
     setShowPaymentModal(true)
   }
+  
   const closePaymentModal = () => setShowPaymentModal(false)
+  
   const handlePaymentFormChange = (e) => {
     const { name, value } = e.target
     if (name === "number") {
@@ -404,22 +421,61 @@ export function AccountPage() {
       setPaymentForm((prev) => ({ ...prev, [name]: value }))
     }
   }
-  const submitPaymentChange = (e) => {
-    e.preventDefault()
-    const digits = paymentForm.number.replace(/\D/g, "")
-    if (digits.length < 13 || digits.length > 16) {
-      return Swal.fire("Erro", "Número de cartão inválido.", "error")
+  
+  const handlePaymentFocus = (e) => {
+    // Se o usuário clicar no input e ele tiver os pontinhos, limpa para digitar o novo cartão
+    if (e.target.value.includes('•')) {
+      setPaymentForm((prev) => ({ ...prev, number: "" }))
     }
-    const last4 = digits.slice(-4)
+  }
+  
+ const submitPaymentChange = async (e) => {
+    e.preventDefault()
+    
+    const isMasked = paymentForm.number.includes('•');
+    let finalLast4 = '';
+    let fullEncrypted = ''; // Nova variável para o cartão criptografado
+    
+    // ATENÇÃO: Em um app real, essa chave secreta deve vir do seu arquivo .env (ex: import.meta.env.VITE_ENCRYPTION_KEY)
+    // Nunca deixe a chave exposta diretamente no código fonte em produção.
+    const SECRET_KEY = "chave_super_secreta_do_seu_app"; 
+
+    if (!isMasked) {
+      // Usuário digitou um cartão NOVO
+      const digits = paymentForm.number.replace(/\D/g, "")
+      if (digits.length < 13 || digits.length > 16) {
+        return Swal.fire("Erro", "Número de cartão inválido.", "error")
+      }
+      finalLast4 = digits.slice(-4)
+      
+      // Criptografa o número completo (todos os 16 dígitos)
+      fullEncrypted = CryptoJS.AES.encrypt(digits, SECRET_KEY).toString()
+    } else {
+      // Usuário não alterou o número, mantém o que já estava no banco
+      finalLast4 = userData.paymentMethod.last4
+      fullEncrypted = userData.paymentMethod.full_encrypted || ""
+    }
+
     const newMethod = {
       type: "credit_card",
-      brand: paymentForm.brand || userData.paymentMethod?.brand || "Visa",
-      last4,
+      brand: paymentForm.brand || "Visa",
+      last4: finalLast4,
       expiry: paymentForm.expiry,
+      full_encrypted: fullEncrypted // Envia o dado criptografado para o Supabase
     }
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        await supabase.from('usuario').update({ payment_method: newMethod }).eq('id', session.user.id)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+
     setUserData((prev) => ({ ...prev, paymentMethod: newMethod }))
     setShowPaymentModal(false)
-    Swal.fire("Atualizado!", "Forma de pagamento alterada.", "success")
+    Swal.fire("Atualizado!", "Forma de pagamento alterada e criptografada com sucesso.", "success")
   }
 
   const scrollToSection = (sectionId) => {
@@ -435,9 +491,11 @@ export function AccountPage() {
     }
   }
 
-  /* ── DERIVADOS ── */
   const features = userData.planSlug ? planDetails[userData.planSlug]?.features || [] : []
   const accentColor = userData.planSlug ? planColors[userData.planSlug] : "#9ca3af"
+  const canDownloadSystem = userData.status === "active" && Boolean(userData.planSlug)
+  
+  const isPlanoMaximo = userData.planSlug === "enterprise";
 
   if (loading) {
     return (
@@ -471,12 +529,14 @@ export function AccountPage() {
                 </div>
                 <p className="account-hero-email">{userData.email}</p>
               </div>
-              <button className="account-upgrade-btn" onClick={() => setShowPlanModal(true)}>
-                {userData.status === "active" ? "Fazer upgrade" : "Assinar agora"} <ArrowUpRight size={16} />
-              </button>
-              {userData.email?.toLowerCase() === ADMIN_EMAIL && (
-                <button className="account-admin-btn" onClick={() => navigate("/admin")}>Painel Admin</button>
-              )}
+              <div className="account-hero-actions">
+                <button className="account-upgrade-btn" onClick={() => setShowPlanModal(true)}>
+                  {isPlanoMaximo ? "Alterar plano" : (userData.status === "active" ? "Fazer upgrade" : "Assinar agora")} <ArrowUpRight size={16} />
+                </button>
+                {userData.email?.toLowerCase() === ADMIN_EMAIL && (
+                  <button className="account-admin-btn" onClick={() => navigate("/admin")}>Painel Admin</button>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -544,7 +604,9 @@ export function AccountPage() {
                           <li key={f}><CheckCircle size={14} style={{ color: accentColor }} />{f}</li>
                         ))}
                       </ul>
-                      <button className="account-upgrade-card-btn" onClick={() => setShowPlanModal(true)}>Upgrade para Enterprise <ArrowUpRight size={15} /></button>
+                      <button className="account-upgrade-card-btn" onClick={() => setShowPlanModal(true)}>
+                        {isPlanoMaximo ? "Alterar plano" : "Upgrade para Enterprise"} <ArrowUpRight size={15} />
+                      </button>
                     </div>
 
                     <div className="account-card">
@@ -614,7 +676,9 @@ export function AccountPage() {
                     </div>
                     <div className="account-plan-upgrade-banner">
                       <div><h4>Precisa de mais recursos?</h4><p>Faça upgrade para o Enterprise.</p></div>
-                      <button className="btn-primary" onClick={() => setShowPlanModal(true)}>Upgrade para Enterprise <ArrowUpRight size={16} /></button>
+                      <button className="btn-primary" onClick={() => setShowPlanModal(true)}>
+                        {isPlanoMaximo ? "Alterar plano" : "Upgrade para Enterprise"} <ArrowUpRight size={16} />
+                      </button>
                     </div>
                   </div>
                 ) : (
@@ -691,7 +755,7 @@ export function AccountPage() {
                   <div className="account-card-header"><h3 className="account-card-title">Dados da conta</h3></div>
                   <div className="account-profile-grid">
                     <div className="account-profile-field"><label><Building2 size={14} /> Empresa</label><input type="text" defaultValue={userData.name} readOnly /></div>
-                    <div className="account-profile-field"><label><User size={14} /> CNPJ</label><input type="text" defaultValue={userData.cnpj || "—"} readOnly /></div>
+                    <div className="account-profile-field"><label><User size={14} /> CNPJ/CPF</label><input type="text" defaultValue={userData.cnpj || userData.cpf || "—"} readOnly /></div>
                     <div className="account-profile-field"><label><Mail size={14} /> Email</label><input type="email" defaultValue={userData.email} readOnly /></div>
                     <div className="account-profile-field"><label><Phone size={14} /> Telefone</label><input type="text" defaultValue={userData.phone || "—"} readOnly /></div>
                   </div>
@@ -708,11 +772,19 @@ export function AccountPage() {
                   )}
                 </div>
 
-                <div className="account-card account-card--wide" style={{ marginTop: 24 }}>
-                  <div className="account-card-header"><h3 className="account-card-title">Download do sistema</h3></div>
-                  <p>Baixe o guia de instalação e acesso ao Soul Dashboard.</p>
-                  <button className="btn-primary" onClick={handleDownloadSystem}><Download size={16} /> Baixar sistema</button>
-                </div>
+                {canDownloadSystem ? (
+                  <div className="account-card account-card--wide" style={{ marginTop: 24 }}>
+                    <div className="account-card-header"><h3 className="account-card-title">Download do sistema</h3></div>
+                    <p>Baixe o guia de instalação e acesso ao Soul Dashboard.</p>
+                    <button className="btn-primary" onClick={handleDownloadSystem}><Download size={16} /> Baixar sistema</button>
+                  </div>
+                ) : (
+                  <div className="account-card account-card--wide account-download-disabled" style={{ marginTop: 24 }}>
+                    <div className="account-card-header"><h3 className="account-card-title">Download do sistema</h3></div>
+                    <p>O download do sistema está disponível somente para clientes com plano ativo.</p>
+                    <p className="account-download-note">Finalize seu checkout e ative seu plano para liberar o instalador.</p>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -753,9 +825,55 @@ export function AccountPage() {
           <div className="modal-card">
             <h3>Alterar forma de pagamento</h3>
             <form onSubmit={submitPaymentChange} className="modal-form">
-              <div className="modal-row"><label>Bandeira</label><input name="brand" value={paymentForm.brand} onChange={handlePaymentFormChange} placeholder="Visa, Mastercard..." /></div>
-              <div className="modal-row"><label>Número do cartão</label><input name="number" value={paymentForm.number} onChange={handlePaymentFormChange} placeholder="0000 0000 0000 0000" maxLength={19} /></div>
-              <div className="modal-row"><label>Validade (MM/AA)</label><input name="expiry" value={paymentForm.expiry} onChange={handlePaymentFormChange} placeholder="08/27" maxLength={5} /></div>
+              <div className="modal-row">
+                <label>Bandeira</label>
+                {/* O select agora conta com estilos inline para forçar a mesma aparência dos inputs do seu CSS */}
+                <select 
+                  name="brand" 
+                  value={paymentForm.brand} 
+                  onChange={handlePaymentFormChange}
+                  style={{
+                    width: "100%",
+                    padding: "0.6rem",
+                    borderRadius: "0.375rem", // Equivalente a 6px, comum em designs modernos
+                    border: "1px solid #d1d5db", // Cor de borda neutra
+                    backgroundColor: "#ffffff",
+                    color: "inherit",
+                    fontFamily: "inherit",
+                    fontSize: "inherit",
+                    outline: "none",
+                    boxSizing: "border-box"
+                  }}
+                >
+                  <option value="Visa">Visa</option>
+                  <option value="Mastercard">Mastercard</option>
+                  <option value="Elo">Elo</option>
+                  <option value="Amex">American Express</option>
+                </select>
+              </div>
+              <div className="modal-row">
+                <label>Número do cartão</label>
+                <input 
+                  type="text"
+                  name="number" 
+                  value={paymentForm.number} 
+                  onChange={handlePaymentFormChange} 
+                  onFocus={handlePaymentFocus}
+                  placeholder="0000 0000 0000 0000" 
+                  maxLength={19} 
+                />
+              </div>
+              <div className="modal-row">
+                <label>Validade (MM/AA)</label>
+                <input 
+                  type="text"
+                  name="expiry" 
+                  value={paymentForm.expiry} 
+                  onChange={handlePaymentFormChange} 
+                  placeholder="08/27" 
+                  maxLength={5} 
+                />
+              </div>
               <div className="modal-actions">
                 <button type="button" className="btn-outline" onClick={closePaymentModal}>Cancelar</button>
                 <button type="submit" className="btn-primary">Salvar</button>

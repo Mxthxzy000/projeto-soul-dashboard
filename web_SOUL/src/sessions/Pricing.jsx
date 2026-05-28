@@ -1,142 +1,157 @@
-  import { Check, Star } from "lucide-react"
-  import { usePlanSelection } from "../hooks/usePlanSelection"
+import { Check, Star } from "lucide-react"
+import { usePlanSelection } from "../hooks/usePlanSelection"
+import { useNavigate } from "react-router-dom"
+import { supabase } from "../lib/supabase.js"
 
- 
-  const plans = [
-    {
-      name: "Essencial",
-      description: "Ideal para pequenas empresas que estão começando a digitalizar sua gestão.",
-      price: "250",
-      features: [
-        "Dashboard básico",
-        "Gestão de estoque",
-        "Controle de funcionários",
-        "Agenda integrada",
-        "Relatórios mensais",
-        "Suporte por email",
-      ],
-      cta: "Começar Agora",
-      popular: false,
-      slug: "essencial",
-    },
-    {
-      name: "Profissional",
-      description: "Para empresas em crescimento que precisam de recursos avançados.",
-      price: "600",
-      features: [
-        "Tudo do plano Essencial",
-        "Gestão de logística",
-        "Controle financeiro completo",
-        "Relatórios personalizados",
-        "Multi-usuários (até 10)",
-        "Suporte prioritário",
-        "Integrações básicas",
-        "App mobile",
-      ],
-      cta: "Escolher Profissional",
-      popular: true,
-      slug: "profissional",
-    },
-    {
-      name: "Enterprise",
-      description: "Solução completa para grandes empresas e indústrias.",
-      price: "1.250",
-      features: [
-        "Tudo do plano Profissional",
-        "Usuários ilimitados",
-        "API personalizada",
-        "Integrações avançadas",
-        "Treinamento da equipe",
-        "Gerente de conta dedicado",
-        "SLA garantido",
-        "Customizações exclusivas",
-        "Backup em tempo real",
-      ],
-      cta: "Falar com Vendas",
-      popular: false,
-      slug: "enterprise",
-    },
-  ]
+const plans = [
+  {
+    name: "Essencial",
+    description: "Ideal para pequenas empresas que estão começando a digitalizar sua gestão.",
+    price: "250",
+    features: [
+      "Dashboard básico",
+      "Gestão de estoque",
+      "Controle de funcionários",
+      "Agenda integrada",
+      "Relatórios mensais",
+      "Suporte por email",
+    ],
+    cta: "Começar Agora",
+    popular: false,
+    slug: "essencial",
+  },
+  {
+    name: "Profissional",
+    description: "Para empresas em crescimento que precisam de recursos avançados.",
+    price: "600",
+    features: [
+      "Tudo do plano Essencial",
+      "Gestão de logística",
+      "Controle financeiro completo",
+      "Relatórios personalizados",
+      "Multi-usuários (até 10)",
+      "Suporte prioritário",
+      "Integrações básicas",
+      "App mobile",
+    ],
+    cta: "Escolher Profissional",
+    popular: true,
+    slug: "profissional",
+  },
+  {
+    name: "Enterprise",
+    description: "Solução completa para grandes empresas e indústrias.",
+    price: "1.250",
+    features: [
+      "Tudo do plano Profissional",
+      "Usuários ilimitados",
+      "API personalizada",
+      "Integrações avançadas",
+      "Treinamento da equipe",
+      "Gerente de conta dedicado",
+      "SLA garantido",
+      "Customizações exclusivas",
+      "Backup em tempo real",
+    ],
+    cta: "Começar agora",
+    popular: false,
+    slug: "enterprise",
+  },
+]
 
-  export function PricingSection() {
-    const { handlePlanSelection, isFirstSelection } = usePlanSelection()
+export function PricingSection() {
+  const { handlePlanSelection, isFirstSelection } = usePlanSelection()
+  const navigate = useNavigate()
 
-    return (
-      <section className="pricing-section">
-        <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">
-              Planos que cabem no seu{" "}
-              <span className="text-accent">orçamento</span>
-            </h2>
-            <p className="section-desc">
-              Escolha o plano ideal para o tamanho da sua empresa. Todos incluem
-              atualizações gratuitas e suporte técnico.
-            </p>
-          </div>
+  // NOVA REGRA: Verifica se está logado antes de chamar o modal
+  const onPlanClick = async (slug) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) {
+      // Se já está logado, vai direto para o checkout
+      navigate(`/checkout?plano=${slug}`);
+    } else {
+      // Se não está logado, chama a função original que abre o modal de login
+      handlePlanSelection(slug);
+    }
+  }
 
-          <div className="pricing-grid">
-            {plans.map((plan, index) => (
-              <div
-                key={plan.name}
-                className={`pricing-card ${plan.popular ? "pricing-card--popular" : ""} card-animate-up card-hover-scale`}
-                style={{ animationDelay: `${index * 0.12}s` }}
-              >
-                {plan.popular && (
-                  <div className="popular-badge">
-                    <Star className="h-3 w-3 fill-current" />
-                    Mais Popular
-                  </div>
-                )}
-
-                <div className="plan-header">
-                  <h3 className="plan-name">
-                    {plan.name}
-                  </h3>
-                  <p className="plan-desc">
-                    {plan.description}
-                  </p>
-                </div>
-
-                <div className="plan-price">
-                  <span className="price-currency">R$</span>
-                  <span className="price-value">{plan.price}</span>
-                  <span className="price-period">/mês</span>
-                </div>
-
-                <ul className="plan-features">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="plan-feature">
-                      <Check className="feature-check h-4 w-4" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <button 
-                  className={`plan-cta ${plan.popular ? "plan-cta--popular" : ""}`}
-                  onClick={() => handlePlanSelection(plan.slug)}
-                >
-                  {plan.cta}
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <p className="pricing-note">
-            Precisa de um plano personalizado?{" "}
-            <a href="mailto:contato@bitlayer.com" className="pricing-link">
-              Entre em contato
-            </a>
+  return (
+    <section className="pricing-section">
+      <div className="container">
+        <div className="section-header">
+          <h2 className="section-title">
+            Planos que cabem no seu{" "}
+            <span className="text-accent">orçamento</span>
+          </h2>
+          <p className="section-desc">
+            Escolha o plano ideal para o tamanho da sua empresa. Todos incluem
+            atualizações gratuitas e suporte técnico.
           </p>
         </div>
-      </section>
-    )
-  }
-  export default function Pricing() {
-    return (
-      <section id="planos" className="py-20">
-        {/* seus planos aqui */}
-      </section>
-    );
-  }
+
+        <div className="pricing-grid">
+          {plans.map((plan, index) => (
+            <div
+              key={plan.name}
+              className={`pricing-card ${plan.popular ? "pricing-card--popular" : ""} card-animate-up card-hover-scale`}
+              style={{ animationDelay: `${index * 0.12}s` }}
+            >
+              {plan.popular && (
+                <div className="popular-badge">
+                  <Star className="h-3 w-3 fill-current" />
+                  Mais Popular
+                </div>
+              )}
+
+              <div className="plan-header">
+                <h3 className="plan-name">
+                  {plan.name}
+                </h3>
+                <p className="plan-desc">
+                  {plan.description}
+                </p>
+              </div>
+
+              <div className="plan-price">
+                <span className="price-currency">R$</span>
+                <span className="price-value">{plan.price}</span>
+                <span className="price-period">/mês</span>
+              </div>
+
+              <ul className="plan-features">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="plan-feature">
+                    <Check className="feature-check h-4 w-4" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <button 
+                className={`plan-cta ${plan.popular ? "plan-cta--popular" : ""}`}
+                onClick={() => onPlanClick(plan.slug)}
+              >
+                {plan.cta}
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <p className="pricing-note">
+          Precisa de um plano personalizado?{" "}
+          <a href="mailto:contato@bitlayer.com" className="pricing-link">
+            Entre em contato
+          </a>
+        </p>
+      </div>
+    </section>
+  )
+}
+
+export default function Pricing() {
+  return (
+    <section id="planos" className="py-20">
+      <PricingSection />
+    </section>
+  );
+}

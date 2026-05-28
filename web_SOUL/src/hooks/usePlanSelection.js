@@ -26,8 +26,8 @@ export function usePlanSelection() {
           await Swal.fire({
             title: 'Login necessário',
             text: 'Você precisa entrar na sua conta para prosseguir com o checkout.',
-            icon: 'info',
             iconColor: '#F38512',
+            icon: 'warning',
             confirmButtonText: 'Ir para Login',
             confirmButtonColor: '#F38512',
             allowOutsideClick: false,
@@ -47,7 +47,8 @@ export function usePlanSelection() {
               <p>Para começar a usar o <strong>${planSlug.charAt(0).toUpperCase() + planSlug.slice(1)}</strong>, você precisará completar o checkout.</p>
               <p style="margin-top: 12px; font-size: 0.9em; color: #666;">Prosseguir para a página de pagamento agora?</p>
             `,
-            icon: 'info',
+            iconColor: '#F38512',
+            icon: 'warning',
             confirmButtonText: 'Ir para Checkout',
             confirmButtonColor: '#F38512',
             allowOutsideClick: false,
@@ -65,6 +66,7 @@ export function usePlanSelection() {
         Swal.fire({
           title: 'Erro',
           text: 'Ocorreu um erro ao selecionar o plano. Tente novamente.',
+          iconColor: '#F38512',
           icon: 'error',
           confirmButtonColor: '#F38512',
         })

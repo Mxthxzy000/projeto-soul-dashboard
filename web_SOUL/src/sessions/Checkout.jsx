@@ -4,6 +4,7 @@ import { Shield, Download, Headphones, CreditCard, Check, X, Lock, AlertCircle }
 import { usePlan } from "../context/PlanContext"
 import { Header } from "../components/Header.jsx"
 import { Footer } from "../components/Footer.jsx"
+import { supabase } from "../lib/supabase.js" // Adicionado para integrar com o banco
 import Swal from "sweetalert2"
 
 const plans = [
@@ -184,8 +185,56 @@ export function CheckoutPage() {
     setIsProcessing(true)
     
     try {
-      // Simular processamento de pagamento
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // CORREÇÃO: Salvando os dados de checkout diretamente na tabela usuario!
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (session?.user) {
+        const hoje = new Date()
+        const proxMes = new Date(hoje)
+        proxMes.setMonth(proxMes.getMonth() + 1)
+
+        const isCnpj = formData.cpfCnpj.replace(/\D/g, "").length > 11;
+        const cleanDoc = formData.cpfCnpj.replace(/\D/g, "");
+
+        const newPaymentMethod = {
+          type: "credit_card",
+          brand: formData.numeroCartao.startsWith('4') ? 'Visa' : 'Mastercard',
+          last4: formData.numeroCartao.replace(/\s/g, '').slice(-4),
+          expiry: formData.validade
+        }
+
+        const invoice = {
+          id: `INV-${Date.now()}`,
+          date: hoje.toISOString().split("T")[0],
+          amount: currentPlan.price,
+          status: "paid",
+          planSlug: selectedPlan
+        }
+
+        // Busca faturas antigas para manter no histórico
+        const { data: currentUser } = await supabase.from('usuario').select('invoices').eq('id', session.user.id).single();
+        const existingInvoices = currentUser?.invoices || [];
+
+        const updatePayload = {
+          nome: formData.nomeCompleto,
+          phone: formData.telefone,
+          plan_slug: selectedPlan,
+          status: 'active',
+          subscription_start: hoje.toISOString().split("T")[0],
+          next_billing: proxMes.toISOString().split("T")[0],
+          payment_method: newPaymentMethod,
+          invoices: [invoice, ...existingInvoices]
+        };
+
+        if (isCnpj) {
+            updatePayload.cnpj = cleanDoc;
+        } else {
+            updatePayload.cpf = cleanDoc;
+        }
+
+        const { error } = await supabase.from('usuario').update(updatePayload).eq('id', session.user.id);
+        if (error) throw error;
+      }
       
       // Marcar checkout como completo no contexto
       markCheckoutComplete()

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { supabase } from "../lib/supabase.js"
 import { Header } from "../components/Header.jsx"
@@ -116,10 +116,11 @@ export function AdminPage() {
 
       setAdminUser(session.user)
 
+      // Removido o 'created_at' que não existe no banco
       const [usersRes, pagesRes, settingsRes] = await Promise.all([
         supabase
           .from("usuario")
-          .select("id, email, nome, status, plan_slug, subscription_start, next_billing, created_at, invoices"),
+          .select("id, email, nome, status, plan_slug, subscription_start, next_billing, invoices"),
         supabase
           .from("cms_pages")
           .select("id, title, slug, status, category, type, excerpt, media_url, updated_at, created_at"),
@@ -189,7 +190,7 @@ export function AdminPage() {
       role: user.email?.toLowerCase() === ADMIN_EMAIL ? "admin" : "user",
       status: user.status || "inactive",
       plano: planDetails[user.plan_slug]?.name || "Nenhum",
-      criado_em: formatDate(user.created_at),
+      cliente_desde: formatDate(user.subscription_start),
     }))
     downloadCsv("admin_usuarios.csv", rows)
   }
@@ -324,12 +325,10 @@ export function AdminPage() {
 
   const sendResetLink = async (email) => {
     try {
-      if (!supabase.auth.resetPasswordForEmail) {
-        throw new Error("Funcionalidade não disponível no cliente atual.")
-      }
-      const { error } = await supabase.auth.resetPasswordForEmail({ email })
+      // Usando a sintaxe correta do Supabase v2 para reset de senha
+      const { error } = await supabase.auth.resetPasswordForEmail(email)
       if (error) throw error
-      Swal.fire("Enviado", "Link de redefinição de senha enviado.", "success")
+      Swal.fire("Enviado", "Link de redefinição de senha enviado com sucesso.", "success")
     } catch (err) {
       Swal.fire("Erro", err.message || "Não foi possível enviar o link.", "error")
     }
@@ -385,8 +384,6 @@ export function AdminPage() {
           <div className="admin-actions">
             <button className="btn-secondary" onClick={() => setActiveSection("overview")}>Visão Geral</button>
             <button className="btn-secondary" onClick={() => setActiveSection("users")}>Usuários</button>
-            <button className="btn-secondary" onClick={() => setActiveSection("content")}>CMS</button>
-            <button className="btn-secondary" onClick={() => setActiveSection("settings")}>Configurações</button>
             <button className="btn-secondary" onClick={() => setActiveSection("reports")}>Relatórios</button>
           </div>
         </section>
@@ -442,7 +439,7 @@ export function AdminPage() {
             </div>
 
             <div className="admin-note">
-              <strong>Importante:</strong> este painel só deve ser acessado pelo email de administrador definido como <code>admin@gmail.com</code>.
+              <strong>Importante:</strong> este painel só deve ser acessado pelo administrador
             </div>
           </section>
         )}
@@ -479,6 +476,7 @@ export function AdminPage() {
                     <button className="btn-icon" onClick={() => toggleUserStatus(user.id, user.status)}>
                       {user.status === "blocked" ? "Ativar" : "Bloquear"}
                     </button>
+                    {/* BOTÃO DE RESET RESTAURADO */}
                     <button className="btn-icon" onClick={() => sendResetLink(user.email)}>
                       Reset Senha
                     </button>

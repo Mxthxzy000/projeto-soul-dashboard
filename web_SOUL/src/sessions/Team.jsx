@@ -39,8 +39,8 @@ export function TeamSection() {
             <span>Conheça nossa equipe</span>
           </div>
           <h2 className="section-title">
-            Somos a{" "}
-            <span className="text-accent">BitLayer</span>
+            Quem está por trás do{" "}
+            <span className="text-accent">S.O.U.L</span>
           </h2>
           <p className="section-desc">
             Uma equipe apaixonada por tecnologia, criando soluções digitais que
