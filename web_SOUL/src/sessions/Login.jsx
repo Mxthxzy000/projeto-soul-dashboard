@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import Swal from "sweetalert2"
 import { Header } from "../components/Header.jsx"
 import { Footer } from "../components/Footer.jsx"
@@ -41,6 +41,8 @@ function capitalizeName(str) {
 
 export function LoginPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const nextParam = searchParams.get('next') || null
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -79,7 +81,7 @@ export function LoginPage() {
     const phoneNumerico = form.phone.replace(/\D/g, "")
 
     try {
-      if (mode === "login") {
+        if (mode === "login") {
         const { data, error: authError } = await supabase.auth.signInWithPassword({
           email: form.email,
           password: form.password,
@@ -90,14 +92,13 @@ export function LoginPage() {
           setLoading(false)
           return
         }
-
         Swal.fire({
           icon: "success",
           title: "Login efetuado!",
           text: "Redirecionando...",
-          timer: 2000,
+          timer: 1200,
           showConfirmButton: false,
-        }).then(() => navigate("/dashboard"))
+        }).then(() => navigate(nextParam || "/conta"))
       } else {
         // Validações de cadastro
         if (!cpfNumerico || cpfNumerico.length !== 11) {
@@ -143,6 +144,25 @@ export function LoginPage() {
           return
         }
 
+        if (data?.user) {
+          await supabase.from("usuario").upsert([
+            {
+              id: data.user.id,
+              email: form.email,
+              nome: capitalizeName(form.nome),
+              cpf: cpfNumerico,
+              cnpj: cnpjNumerico || "",
+              phone: phoneNumerico || "",
+              status: "active",
+              plan_slug: null,
+              subscription_start: null,
+              next_billing: null,
+              payment_method: null,
+              invoices: [],
+            },
+          ])
+        }
+
         // Se o email de confirmação estiver desabilitado, a sessão é retornada
         if (data.session) {
           // Login automático
@@ -150,9 +170,9 @@ export function LoginPage() {
             icon: "success",
             title: "Conta criada!",
             text: "Bem-vindo ao Soul Dashboard.",
-            timer: 2000,
+            timer: 1200,
             showConfirmButton: false,
-          }).then(() => navigate("/dashboard"))
+          }).then(() => navigate(nextParam || "/conta"))
         } else {
           // Fallback: confirmação de email ainda ativa
           setError("")

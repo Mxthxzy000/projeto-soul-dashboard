@@ -1,0 +1,366 @@
+.admin-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  color: #202020;
+}
+
+.admin-main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+.admin-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.admin-badge {
+  display: inline-block;
+  background: rgba(243, 133, 18, 0.1);
+  color: #c55a05;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.admin-hero h1 {
+  font-size: 36px;
+  margin: 0 0 12px;
+}
+
+.admin-hero p {
+  font-size: 15px;
+  color: #555;
+  max-width: 680px;
+}
+
+.admin-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(170px, 1fr));
+  gap: 10px;
+}
+
+.btn-secondary {
+  border: 1px solid #d5d5d5;
+  background: white;
+  color: #1f1f1f;
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  border-color: #c7c7c7;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+  border: none;
+  background: #f38512;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(243, 133, 18, 0.18);
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.admin-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid #ececec;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.card-icon {
+  min-width: 52px;
+  min-height: 52px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  color: white;
+}
+
+.card-icon--blue { background: #2563eb; }
+.card-icon--green { background: #16a34a; }
+.card-icon--orange { background: #f97316; }
+.card-icon--violet { background: #8b5cf6; }
+
+.card-label {
+  font-size: 13px;
+  color: #737373;
+  margin-bottom: 6px;
+}
+
+.card-value {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.admin-section {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid #e5e5e5;
+  padding: 28px;
+  margin-bottom: 28px;
+}
+
+.admin-section-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.admin-section-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.admin-section-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-warning,
+.admin-error,
+.admin-note {
+  background: #fff4e5;
+  border: 1px solid #fde2bf;
+  color: #7a4b00;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 18px;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.overview-card {
+  background: #fafafa;
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.overview-card p {
+  margin: 0 0 10px;
+  color: #656565;
+}
+
+.overview-card strong {
+  font-size: 24px;
+}
+
+.admin-table-wrap {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #e5e5e5;
+}
+
+.admin-table-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1.6fr 1fr 1fr 1fr 2.4fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.admin-table-header {
+  background: #fafafa;
+  font-weight: 700;
+}
+
+.admin-table-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-icon {
+  background: rgba(7, 7, 7, 0.04);
+  border: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-icon--danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.content-manager-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+}
+
+.content-list-card,
+.content-editor-card {
+  background: #fdfdfd;
+  border: 1px solid #e5e5e5;
+  border-radius: 20px;
+  padding: 22px;
+}
+
+.content-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid #ececec;
+}
+
+.content-card:last-child {
+  border-bottom: none;
+}
+
+.content-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-empty {
+  color: #666;
+  font-size: 14px;
+  padding: 14px 0;
+}
+
+.content-form label,
+.settings-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.content-form input,
+.content-form textarea,
+.content-form select,
+.settings-form input,
+.settings-form textarea,
+.settings-form select {
+  width: 100%;
+  border: 1px solid #d7d7d7;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #262626;
+  background: white;
+}
+
+.settings-form {
+  display: grid;
+  gap: 18px;
+}
+
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.report-card {
+  background: #fbfbfb;
+  border: 1px solid #e5e5e5;
+  border-radius: 20px;
+  padding: 22px;
+  min-height: 180px;
+}
+
+.report-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.report-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.report-line:last-child {
+  border-bottom: none;
+}
+
+.report-card--actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.report-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+@media (max-width: 1100px) {
+  .admin-grid,
+  .overview-grid,
+  .reports-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .admin-hero,
+  .admin-actions,
+  .content-manager-grid,
+  .admin-table-row,
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-table-row {
+    grid-template-columns: 1fr;
+    padding: 14px 16px;
+  }
+
+  .admin-section-header,
+  .report-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

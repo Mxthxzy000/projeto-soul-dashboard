@@ -51,6 +51,8 @@ const planDetails = {
   },
 }
 
+const ADMIN_EMAIL = "admin@gmail.com"
+
 const planColors = {
   essencial: "#6B7280",
   profissional: "#F38512",
@@ -88,6 +90,7 @@ export function AccountPage() {
     nextBilling: null,
     paymentMethod: null,
     invoices: [],
+    role: "user",
   })
   const [loading, setLoading] = useState(true)
   const [showPlanModal, setShowPlanModal] = useState(false)
@@ -121,6 +124,7 @@ export function AccountPage() {
             ...prev,
             name: "Usuário",
             email: session.user.email,
+            role: "user",
           }))
         } else {
           const currentPlan = planDetails[usuario.plan_slug] || null
@@ -138,6 +142,7 @@ export function AccountPage() {
             nextBilling: usuario.next_billing || null,
             paymentMethod: usuario.payment_method || null,
             invoices: usuario.invoices || [],
+            role: usuario.role || "user",
           })
         }
       } catch (err) {
@@ -469,6 +474,9 @@ export function AccountPage() {
               <button className="account-upgrade-btn" onClick={() => setShowPlanModal(true)}>
                 {userData.status === "active" ? "Fazer upgrade" : "Assinar agora"} <ArrowUpRight size={16} />
               </button>
+              {userData.email?.toLowerCase() === ADMIN_EMAIL && (
+                <button className="account-admin-btn" onClick={() => navigate("/admin")}>Painel Admin</button>
+              )}
             </div>
           </div>
         </div>

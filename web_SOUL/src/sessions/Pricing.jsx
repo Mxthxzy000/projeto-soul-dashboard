@@ -1,5 +1,5 @@
   import { Check, Star } from "lucide-react"
-  import { useNavigate } from "react-router-dom"
+  import { usePlanSelection } from "../hooks/usePlanSelection"
 
  
   const plans = [
@@ -59,11 +59,7 @@
   ]
 
   export function PricingSection() {
-    const navigate = useNavigate()
-
-    const handlePlanClick = (slug) => {
-      navigate(`/checkout?plano=${slug}`)
-    }
+    const { handlePlanSelection, isFirstSelection } = usePlanSelection()
 
     return (
       <section className="pricing-section">
@@ -119,7 +115,7 @@
 
                 <button 
                   className={`plan-cta ${plan.popular ? "plan-cta--popular" : ""}`}
-                  onClick={() => handlePlanClick(plan.slug)}
+                  onClick={() => handlePlanSelection(plan.slug)}
                 >
                   {plan.cta}
                 </button>

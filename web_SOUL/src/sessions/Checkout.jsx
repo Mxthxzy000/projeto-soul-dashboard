@@ -1,8 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useSearchParams, useNavigate } from "react-router-dom"
-import { Shield, Download, Headphones, CreditCard, Check, X, Lock } from "lucide-react"
+import { Shield, Download, Headphones, CreditCard, Check, X, Lock, AlertCircle } from "lucide-react"
+import { usePlan } from "../context/PlanContext"
 import { Header } from "../components/Header.jsx"
 import { Footer } from "../components/Footer.jsx"
+import Swal from "sweetalert2"
 
 const plans = [
   {
@@ -46,10 +48,13 @@ const plans = [
 export function CheckoutPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const planParam = searchParams.get("plano") || "profissional"
+  const { selectedPlan: contextPlan, isFirstPlanSelection, markCheckoutComplete } = usePlan()
+  
+  const planParam = searchParams.get("plano") || contextPlan || "profissional"
   
   const [selectedPlan, setSelectedPlan] = useState(planParam)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
   
   const [formData, setFormData] = useState({
     nomeCompleto: "",
@@ -61,6 +66,21 @@ export function CheckoutPage() {
     validade: "",
     cvv: "",
   })
+
+  // Validar se usuário está vindo de seleção de plano
+  useEffect(() => {
+    if (!planParam && !contextPlan) {
+      // Se não há plano selecionado, redirecionar para home
+      Swal.fire({
+        title: "Plano não selecionado",
+        text: "Por favor, selecione um plano antes de prosseguir com o checkout.",
+        icon: "warning",
+        confirmButtonColor: "#F38512",
+      }).then(() => {
+        navigate("/")
+      })
+    }
+  }, [planParam, contextPlan, navigate])
 
   const currentPlan = plans.find(p => p.id === selectedPlan) || plans[1]
 
@@ -121,9 +141,67 @@ export function CheckoutPage() {
     return `${numbers.slice(0, 2)}/${numbers.slice(2, 4)}`
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setShowSuccessModal(true)
+    
+    // Validações básicas
+    const requiredFields = ['nomeCompleto', 'nomeEmpresa', 'email', 'telefone', 'cpfCnpj', 'numeroCartao', 'validade', 'cvv']
+    const emptyFields = requiredFields.filter(field => !formData[field].trim())
+    
+    if (emptyFields.length > 0) {
+      await Swal.fire({
+        title: "Campos Obrigatórios",
+        text: "Por favor, preencha todos os campos do formulário.",
+        icon: "warning",
+        confirmButtonColor: "#F38512",
+      })
+      return
+    }
+
+    // Validação de email básica
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formData.email)) {
+      await Swal.fire({
+        title: "Email inválido",
+        text: "Por favor, insira um e-mail válido.",
+        icon: "warning",
+        confirmButtonColor: "#F38512",
+      })
+      return
+    }
+
+    // Validação de cartão
+    if (formData.numeroCartao.replace(/\s/g, '').length < 13) {
+      await Swal.fire({
+        title: "Cartão inválido",
+        text: "Por favor, insira um número de cartão válido.",
+        icon: "warning",
+        confirmButtonColor: "#F38512",
+      })
+      return
+    }
+
+    setIsProcessing(true)
+    
+    try {
+      // Simular processamento de pagamento
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      // Marcar checkout como completo no contexto
+      markCheckoutComplete()
+      
+      setShowSuccessModal(true)
+    } catch (error) {
+      console.error('Erro ao processar pagamento:', error)
+      await Swal.fire({
+        title: "Erro no Pagamento",
+        text: "Ocorreu um erro ao processar seu pagamento. Tente novamente.",
+        icon: "error",
+        confirmButtonColor: "#F38512",
+      })
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   const handleDownload = () => {
@@ -194,6 +272,17 @@ export function CheckoutPage() {
                   </div>
 
                   <form onSubmit={handleSubmit}>
+                    {/* Aviso de Primeira Seleção */}
+                    {isFirstPlanSelection && (
+                      <div className="form-alert form-alert--info">
+                        <AlertCircle size={18} />
+                        <div className="alert-content">
+                          <strong>Primeira seleção de plano</strong>
+                          <p>O checkout é obrigatório para ativar sua conta. Todos os dados serão protegidos com criptografia SSL.</p>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Selecao de Plano */}
                     <div className="form-section">
                       <h3 className="form-section-title">Selecione seu plano</h3>
@@ -326,9 +415,9 @@ export function CheckoutPage() {
                       </div>
                     </div>
 
-                    <button type="submit" className="checkout-submit-btn">
+                    <button type="submit" className="checkout-submit-btn" disabled={isProcessing}>
                       <Lock size={18} />
-                      Finalizar Pagamento - R$ {currentPlan.price.toLocaleString("pt-BR")}/mes
+                      {isProcessing ? "Processando..." : `Finalizar Pagamento - R$ ${currentPlan.price.toLocaleString("pt-BR")}/mês`}
                     </button>
                   </form>
                 </div>
