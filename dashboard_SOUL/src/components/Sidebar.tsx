@@ -35,7 +35,7 @@ export function Sidebar() {
         </div>
       </div>
 
-      <nav className="flex-1 space-y-1 px-3 py-4">
+      <nav className="flex-1 space-y-1 py-4">
         {navItems.map((item) => {
           const isActive = pathname === item.href
           return (
@@ -43,9 +43,9 @@ export function Sidebar() {
               key={item.name}
               to={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200",
+                "relative flex items-center gap-3 px-6 py-3 text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-[#e67e22] text-white shadow-lg shadow-[#e67e22]/30"
+                  ? "bg-[#3d3d3d] text-white before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-[#e67e22]"
                   : "text-gray-400 hover:bg-[#3d3d3d] hover:text-white"
               )}
             >
