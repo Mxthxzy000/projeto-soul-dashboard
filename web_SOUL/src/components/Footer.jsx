@@ -28,7 +28,7 @@ export function Footer({ onNavigate }) {
           {/* Brand */}
           <div className="footer-brand">
             <div className="footer-logo">
-              <img src="/BitLayerLogo.png" alt="BitLayer" className="footer-logo-img" />
+              <img src="/DashboardSoulLogo.png" alt="Soul Dashboard" className="footer-logo-img" />
             </div>
             <p className="footer-tagline">
               Sistema completo de gestão empresarial para administração, logística
@@ -37,7 +37,7 @@ export function Footer({ onNavigate }) {
             <div className="footer-contacts">
               <div className="footer-contact">
                 <Mail size={16} />
-                <span>contato@bitlayer.com</span>
+                <span>contato@souldashboard.com</span>
               </div>
               <div className="footer-contact">
                 <Phone size={16} />
@@ -97,7 +97,7 @@ export function Footer({ onNavigate }) {
         </div>
 
         <div className="footer-bottom">
-          <p>2026 BitLayer. Todos os direitos reservados. | Caçapava - SP</p>
+          <p>2026 Soul Dashboard. Todos os direitos reservados. | Caçapava - SP</p>
           <div className="footer-bottom-links">
             <a href="#" className="footer-link">Termos de Uso</a>
             <a href="#" className="footer-link">Privacidade</a>

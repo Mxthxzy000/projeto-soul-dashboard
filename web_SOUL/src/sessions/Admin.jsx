@@ -94,6 +94,14 @@ export function AdminPage() {
   const [usersError, setUsersError] = useState(null)
   const [savingContent, setSavingContent] = useState(false)
   const [savingSettings, setSavingSettings] = useState(false)
+  const [showResetPasswordModal, setShowResetPasswordModal] = useState(false)
+  const [resetPasswordForm, setResetPasswordForm] = useState({
+    userId: null,
+    email: "",
+    password: "",
+    confirmPassword: "",
+  })
+  const [resettingPassword, setResettingPassword] = useState(false)
 
   const loadAdminData = async () => {
     setLoading(true)
@@ -313,24 +321,106 @@ export function AdminPage() {
   }
 
   const toggleUserStatus = async (userId, currentStatus) => {
-    const nextStatus = currentStatus === "blocked" ? "active" : "blocked"
-    const { error } = await supabase.from("usuario").update({ status: nextStatus }).eq("id", userId)
-    if (error) {
-      Swal.fire("Erro", error.message, "error")
+    if (userId === adminUser?.id) {
+      Swal.fire("Atenção", "Não é permitido bloquear ou ativar o administrador.", "warning")
       return
     }
+
+    const nextStatus = currentStatus === "blocked" ? "active" : "blocked"
+    const { error } = await supabase
+      .from("usuario")
+      .update({ status: nextStatus })
+      .eq("id", userId)
+
+    if (error) {
+      Swal.fire("Erro", error.message, "error")
+      console.error("Toggle user status error:", error)
+      return
+    }
+
     await loadAdminData()
     Swal.fire("Sucesso", `Usuário ${nextStatus === "blocked" ? "bloqueado" : "ativado"}.`, "success")
   }
 
-  const sendResetLink = async (email) => {
+  const openResetPasswordModal = (user) => {
+    setResetPasswordForm({
+      userId: user.id,
+      email: user.email,
+      password: "",
+      confirmPassword: "",
+    })
+    setShowResetPasswordModal(true)
+  }
+
+  const closeResetPasswordModal = () => setShowResetPasswordModal(false)
+
+  const handleResetPasswordChange = (field, value) => {
+    setResetPasswordForm((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const resetUserPassword = async (event) => {
+    event.preventDefault()
+    if (!resetPasswordForm.userId) return
+
+    const { password, confirmPassword, userId } = resetPasswordForm
+    if (password.length < 6) {
+      Swal.fire("Erro", "A senha deve ter pelo menos 6 caracteres.", "error")
+      return
+    }
+    if (password !== confirmPassword) {
+      Swal.fire("Erro", "As senhas não coincidem.", "error")
+      return
+    }
+
+    setResettingPassword(true)
     try {
-      // Usando a sintaxe correta do Supabase v2 para reset de senha
-      const { error } = await supabase.auth.resetPasswordForEmail(email)
-      if (error) throw error
-      Swal.fire("Enviado", "Link de redefinição de senha enviado com sucesso.", "success")
+      if (userId === adminUser?.id) {
+        const { error: authError } = await supabase.auth.updateUser({ password })
+        if (authError) throw authError
+      } else {
+        const { data: session } = await supabase.auth.getSession()
+        const token = session?.session?.access_token
+        if (!token) {
+          throw new Error("Usuário não autenticado para executar esta ação.")
+        }
+
+        const response = await fetch("/api/admin/reset-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            userId,
+            password,
+          }),
+        })
+
+        let payload = null
+        const contentType = response.headers.get("content-type") || ""
+        if (contentType.includes("application/json")) {
+          try {
+            payload = await response.json()
+          } catch (parseError) {
+            payload = null
+          }
+        } else {
+          const text = await response.text()
+          payload = text ? { error: text } : null
+        }
+
+        if (!response.ok) {
+          throw new Error(payload?.error || "Não foi possível redefinir a senha.")
+        }
+      }
+
+      await loadAdminData()
+      closeResetPasswordModal()
+      Swal.fire("Sucesso", "Senha do usuário atualizada com sucesso.", "success")
     } catch (err) {
-      Swal.fire("Erro", err.message || "Não foi possível enviar o link.", "error")
+      Swal.fire("Erro", err.message || "Não foi possível redefinir a senha.", "error")
+    } finally {
+      setResettingPassword(false)
     }
   }
 
@@ -380,6 +470,9 @@ export function AdminPage() {
             <p className="admin-badge">Administração</p>
             <h1>Painel de Controle</h1>
             <p>Monitoramento de usuários, assinaturas, faturamento e conteúdo do site.</p>
+            <div className="admin-warning admin-hero-warning">
+              <strong>Importante:</strong> este painel só deve ser acessado pelo administrador.
+            </div>
           </div>
           <div className="admin-actions">
             <button className="btn-secondary" onClick={() => setActiveSection("overview")}>Visão Geral</button>
@@ -437,10 +530,6 @@ export function AdminPage() {
                 </div>
               ))}
             </div>
-
-            <div className="admin-note">
-              <strong>Importante:</strong> este painel só deve ser acessado pelo administrador
-            </div>
           </section>
         )}
 
@@ -473,12 +562,21 @@ export function AdminPage() {
                   <span>{user.status || "inactive"}</span>
                   <span>{user.email?.toLowerCase() === ADMIN_EMAIL ? "Administrador" : "Usuário"}</span>
                   <span className="admin-table-actions">
-                    <button className="btn-icon" onClick={() => toggleUserStatus(user.id, user.status)}>
-                      {user.status === "blocked" ? "Ativar" : "Bloquear"}
+                    <button
+                      type="button"
+                      className="btn-icon"
+                      disabled={user.email?.toLowerCase() === ADMIN_EMAIL}
+                      onClick={() => toggleUserStatus(user.id, user.status)}
+                    >
+                      {user.status === "blocked" ? "Desbloquear" : "Bloquear"}
                     </button>
-                    {/* BOTÃO DE RESET RESTAURADO */}
-                    <button className="btn-icon" onClick={() => sendResetLink(user.email)}>
-                      Reset Senha
+                    <button
+                      type="button"
+                      className="btn-icon"
+                      disabled={user.email?.toLowerCase() === ADMIN_EMAIL}
+                      onClick={() => openResetPasswordModal(user)}
+                    >
+                      Reiniciar senha
                     </button>
                   </span>
                 </div>
@@ -648,6 +746,43 @@ export function AdminPage() {
               </div>
             </div>
           </section>
+        )}
+
+        {showResetPasswordModal && (
+          <div className="modal-overlay" onClick={closeResetPasswordModal}>
+            <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+              <h3>Redefinir senha</h3>
+              <p>Usuário: <strong>{resetPasswordForm.email}</strong></p>
+              <form onSubmit={resetUserPassword} className="modal-form">
+                <div className="modal-row">
+                  <label>Nova senha</label>
+                  <input
+                    type="password"
+                    value={resetPasswordForm.password}
+                    onChange={(e) => handleResetPasswordChange("password", e.target.value)}
+                    minLength={6}
+                    required
+                  />
+                </div>
+                <div className="modal-row">
+                  <label>Confirmar senha</label>
+                  <input
+                    type="password"
+                    value={resetPasswordForm.confirmPassword}
+                    onChange={(e) => handleResetPasswordChange("confirmPassword", e.target.value)}
+                    minLength={6}
+                    required
+                  />
+                </div>
+                <div className="modal-actions">
+                  <button type="button" className="btn-outline" onClick={closeResetPasswordModal}>Cancelar</button>
+                  <button type="submit" className="btn-primary" disabled={resettingPassword}>
+                    {resettingPassword ? "Atualizando..." : "Salvar senha"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         )}
       </main>
       <Footer />

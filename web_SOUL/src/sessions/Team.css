@@ -2,8 +2,8 @@
    TEAM SECTION
    ============================================ */
 .team-section {
-  min-height: 100vh;
-  padding: 120px 0;
+  min-height: auto;
+  padding: 80px 0;
   background: #FFFFFF;
   display: flex;
   flex-direction: column;

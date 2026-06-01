@@ -1,12 +1,22 @@
 import { Navigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../context/AuthContext'
 
-export function ProtectedRoute({ children }) {
-  const { user, loading } = useAuth()
+const ADMIN_EMAIL = 'admin@gmail.com'
+
+export function ProtectedRoute({ children, adminOnly = false }) {
+  const { userAuth, usuario, loading } = useAuth()
 
   if (loading) {
-    return <div className="spinner">Carregando...</div> // Pode criar um spinner melhor
+    return <div className="spinner">Carregando...</div>
   }
 
-  return user ? children : <Navigate to="/login" replace />
+  if (!userAuth) {
+    return <Navigate to="/login" replace />
+  }
+
+  if (adminOnly && usuario?.email?.toLowerCase() !== ADMIN_EMAIL) {
+    return <Navigate to="/conta" replace />
+  }
+
+  return children
 }

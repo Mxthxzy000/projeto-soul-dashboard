@@ -101,6 +101,12 @@ export function AccountPage() {
     number: "",
     expiry: "",
   })
+  const [profileForm, setProfileForm] = useState({
+    email: "",
+    phone: "",
+  })
+  const [editingProfile, setEditingProfile] = useState(false)
+  const [savingProfile, setSavingProfile] = useState(false)
 
   /* ── BUSCAR DADOS DO SUPABASE ── */
   useEffect(() => {
@@ -127,6 +133,10 @@ export function AccountPage() {
             email: session.user.email,
             role: "user",
           }))
+          setProfileForm({
+            email: session.user.email,
+            phone: "",
+          })
         } else {
           const currentPlan = planDetails[usuario.plan_slug] || null
           setUserData({
@@ -145,6 +155,11 @@ export function AccountPage() {
             invoices: usuario.invoices || [],
             role: usuario.role || "user",
           })
+          setProfileForm({
+            email: usuario.email,
+            phone: usuario.phone || "",
+          })
+          setEditingProfile(false)
         }
       } catch (err) {
         console.error(err)
@@ -428,7 +443,58 @@ export function AccountPage() {
       setPaymentForm((prev) => ({ ...prev, number: "" }))
     }
   }
-  
+
+  const handleProfileFormChange = (e) => {
+    const { name, value } = e.target
+    setProfileForm((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleStartEditProfile = () => {
+    setEditingProfile(true)
+  }
+
+  const cancelEditProfile = () => {
+    setProfileForm({
+      email: userData.email,
+      phone: userData.phone,
+    })
+    setEditingProfile(false)
+  }
+
+  const saveProfile = async (e) => {
+    e.preventDefault()
+    if (!editingProfile) return
+    setSavingProfile(true)
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session?.user) {
+        throw new Error("Usuário não autenticado.")
+      }
+
+      const updates = {
+        phone: profileForm.phone,
+        email: profileForm.email,
+      }
+
+      if (profileForm.email !== userData.email) {
+        const { error: authError } = await supabase.auth.updateUser({ email: profileForm.email })
+        if (authError) throw authError
+      }
+
+      const { error } = await supabase.from("usuario").update(updates).eq("id", session.user.id)
+      if (error) throw error
+
+      setUserData((prev) => ({ ...prev, email: profileForm.email, phone: profileForm.phone }))
+      setEditingProfile(false)
+      Swal.fire("Sucesso", "Perfil atualizado com sucesso.", "success")
+    } catch (err) {
+      Swal.fire("Erro", err.message || "Não foi possível atualizar o perfil.", "error")
+    } finally {
+      setSavingProfile(false)
+    }
+  }
+ 
  const submitPaymentChange = async (e) => {
     e.preventDefault()
     
@@ -615,7 +681,7 @@ export function AccountPage() {
                         <button className="account-card-action" onClick={() => setActiveTab("billing")}>Ver todas <ChevronRight size={14} /></button>
                       </div>
                       <div className="account-invoices-list">
-                        {userData.invoices.slice(0, 3).map((inv) => (
+                        {(Array.isArray(userData.invoices) ? userData.invoices.slice(0, 3) : []).map((inv) => (
                           <div key={inv.id} className="account-invoice-row">
                             <div className="account-invoice-info">
                               <span className="account-invoice-id">{inv.id}</span>
@@ -730,7 +796,7 @@ export function AccountPage() {
                       <div className="account-card-header"><h3 className="account-card-title">Histórico de faturas</h3></div>
                       <div className="account-invoices-table">
                         <div className="account-invoices-table-header"><span>Fatura</span><span>Data</span><span>Valor</span><span>Status</span><span></span></div>
-                        {userData.invoices.map((inv) => (
+                        {(Array.isArray(userData.invoices) ? userData.invoices : []).map((inv) => (
                           <div key={inv.id} className="account-invoices-table-row">
                             <span className="account-invoice-id">{inv.id}</span>
                             <span>{formatDate(inv.date)}</span>
@@ -753,13 +819,31 @@ export function AccountPage() {
               <div className="account-section">
                 <div className="account-card account-card--wide">
                   <div className="account-card-header"><h3 className="account-card-title">Dados da conta</h3></div>
-                  <div className="account-profile-grid">
-                    <div className="account-profile-field"><label><Building2 size={14} /> Empresa</label><input type="text" defaultValue={userData.name} readOnly /></div>
-                    <div className="account-profile-field"><label><User size={14} /> CNPJ/CPF</label><input type="text" defaultValue={userData.cnpj || userData.cpf || "—"} readOnly /></div>
-                    <div className="account-profile-field"><label><Mail size={14} /> Email</label><input type="email" defaultValue={userData.email} readOnly /></div>
-                    <div className="account-profile-field"><label><Phone size={14} /> Telefone</label><input type="text" defaultValue={userData.phone || "—"} readOnly /></div>
-                  </div>
-                  <div className="account-profile-note"><AlertCircle size={14} /> Para alterar dados, contate suporte@souldashboard.com.</div>
+                  <form className="account-profile-form" onSubmit={saveProfile}>
+                    <div className="account-profile-grid">
+                      <div className="account-profile-field"><label><Building2 size={14} /> Nome completo</label><input type="text" defaultValue={userData.name} readOnly /></div>
+                      <div className="account-profile-field"><label><User size={14} /> CNPJ/CPF</label><input type="text" defaultValue={userData.cnpj || userData.cpf || "—"} readOnly /></div>
+                      <div className="account-profile-field"><label><Mail size={14} /> Email</label><input name="email" type="email" value={profileForm.email} onChange={handleProfileFormChange} required readOnly={!editingProfile} /></div>
+                      <div className="account-profile-field"><label><Phone size={14} /> Telefone</label><input name="phone" type="text" value={profileForm.phone} onChange={handleProfileFormChange} readOnly={!editingProfile} /></div>
+                    </div>
+                    <div className="account-profile-note"><AlertCircle size={14} /> Atualize seu e-mail e telefone diretamente aqui.</div>
+                    <div className="account-profile-actions">
+                      {!editingProfile ? (
+                        <button type="button" className="btn-secondary" onClick={handleStartEditProfile}>
+                          Editar informações
+                        </button>
+                      ) : (
+                        <>
+                          <button type="submit" className="btn-primary" disabled={savingProfile}>
+                            {savingProfile ? "Salvando..." : "Salvar alterações"}
+                          </button>
+                          <button type="button" className="btn-secondary" onClick={cancelEditProfile} disabled={savingProfile}>
+                            Cancelar
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </form>
                 </div>
 
                 <div className="account-card account-card--wide account-danger-card" style={{ marginTop: 24 }}>

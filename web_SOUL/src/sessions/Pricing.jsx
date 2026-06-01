@@ -139,7 +139,7 @@ export function PricingSection() {
 
         <p className="pricing-note">
           Precisa de um plano personalizado?{" "}
-          <a href="mailto:contato@bitlayer.com" className="pricing-link">
+          <a href="mailto:contato@souldashboard.com" className="pricing-link">
             Entre em contato
           </a>
         </p>

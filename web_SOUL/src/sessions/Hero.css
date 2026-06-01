@@ -2,8 +2,8 @@
    HERO SECTION
    ============================================ */
 .hero-section {
-  min-height: 100vh;
-  padding: 120px 0;
+  min-height: 90vh;
+  padding: 80px 0;
   background: var(--color-bg);
   position: relative;
   overflow: hidden;

@@ -13,7 +13,7 @@ import Swal from 'sweetalert2'
 export function usePlanSelection() {
   const navigate = useNavigate()
   const { selectPlan, hasCompletedFirstCheckout, selectedPlan } = usePlan()
-  const { user } = useAuth()
+  const { userAuth } = useAuth()
 
   const handlePlanSelection = useCallback(
     async (planSlug) => {
@@ -22,7 +22,7 @@ export function usePlanSelection() {
         const isFirst = selectPlan(planSlug)
 
         // Se usuário não autenticado, redirecionar para login antes do checkout
-        if (!user) {
+        if (!userAuth) {
           await Swal.fire({
             title: 'Login necessário',
             text: 'Você precisa entrar na sua conta para prosseguir com o checkout.',

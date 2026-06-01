@@ -93,6 +93,22 @@ export function LoginPage() {
 
     try {
       if (mode === "login") {
+        const { data: usuario, error: usuarioError } = await supabase
+          .from("usuario")
+          .select("status")
+          .eq("email", form.email)
+          .maybeSingle()
+
+        if (usuarioError) {
+          console.warn("Erro ao verificar status do usuário:", usuarioError.message)
+        }
+
+        if (usuario?.status === "blocked") {
+          setError("Conta bloqueada. Entre em contato com o suporte.")
+          setLoading(false)
+          return
+        }
+
         const { data, error: authError } = await supabase.auth.signInWithPassword({
           email: form.email,
           password: form.password,
@@ -307,6 +323,11 @@ export function LoginPage() {
                     : "Cadastrar"}
                 </button>
               </div>
+              {mode === "login" && (
+                <div className="login-forgot">
+                  <button type="button" className="toggle-btn" onClick={() => navigate("/forgot-password")}>Esqueci minha senha</button>
+                </div>
+              )}
             </form>
 
             <div className="login-toggle">

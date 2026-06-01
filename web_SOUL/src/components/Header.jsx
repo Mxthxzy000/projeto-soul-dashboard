@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Menu, X, UserCircle } from "lucide-react"
 import { useNavigate, useLocation } from "react-router-dom"
-import { supabase } from "../lib/supabase.js"
+import { useAuth } from "../context/AuthContext.jsx"
 
 export function Header({ onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [user, setUser] = useState(null)
+  const { userAuth, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -59,36 +59,10 @@ export function Header({ onNavigate }) {
 
   const handleLogout = async (e) => {
     e && e.preventDefault()
-    await supabase.auth.signOut()
-    setUser(null)
+    await logout()
     setMobileMenuOpen(false)
     navigate('/')
   }
-
-  useEffect(() => {
-    // Obter sessão atual do Supabase
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session?.user) {
-        setUser(session.user)
-      } else {
-        setUser(null)
-      }
-    }
-
-    getSession()
-
-    // Escutar mudanças de autenticação
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        setUser(session.user)
-      } else {
-        setUser(null)
-      }
-    })
-
-    return () => subscription?.unsubscribe()
-  }, [])
 
   return (
     <header className="header">
@@ -102,7 +76,7 @@ export function Header({ onNavigate }) {
           <a href="/" className="nav-link" onClick={handleHome}>Home</a>
           <a href="#sobre" className="nav-link" onClick={(e) => handleNavClick(e, "sobre")}>Sobre Nós</a>
           <a href="#planos" className="nav-link" onClick={(e) => handleNavClick(e, "planos")}>Planos</a>
-          {user ? (
+          {userAuth ? (
             <>
               <a href="/conta" className="nav-link nav-link--account" onClick={goToAccount}>
                 <UserCircle size={17} />
@@ -133,7 +107,7 @@ export function Header({ onNavigate }) {
           <a href="/" className="nav-link" onClick={handleHome}>Home</a>
           <a href="#sobre" className="nav-link" onClick={(e) => handleNavClick(e, "sobre")}>Sobre Nós</a>
           <a href="#planos" className="nav-link" onClick={(e) => handleNavClick(e, "planos")}>Planos</a>
-          {user ? (
+          {userAuth ? (
             <>
               <a href="/conta" className="nav-link nav-link--account" onClick={goToAccount}>
                 <UserCircle size={17} />

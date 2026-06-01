@@ -13,7 +13,10 @@ import { Footer } from './components/Footer.jsx'
 import { CheckoutPage } from './sessions/Checkout.jsx'
 import { AccountPage } from './sessions/Account.jsx'
 import { LoginPage } from './sessions/Login.jsx'
+import { ForgotPasswordPage } from './sessions/ForgotPassword.jsx'
+import { ResetPasswordPage } from './sessions/ResetPassword.jsx'
 import { AdminPage } from './sessions/Admin.jsx'
+import { ProtectedRoute } from './components/ProtectedRoute.jsx'
 
 function HomePage() {
   const scrollToSection = (sectionId) => {
@@ -51,9 +54,11 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/conta" element={<AccountPage />} />
+          <Route path="/conta" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/admin" element={<ProtectedRoute adminOnly><AdminPage /></ProtectedRoute>} />
         </Routes>
       </PlanProvider>
     </AuthProvider>

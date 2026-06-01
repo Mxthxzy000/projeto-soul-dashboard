@@ -7,15 +7,15 @@
 .admin-main {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 32px 24px 80px;
+  padding: 24px 20px 64px;
 }
 
 .admin-hero {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: 18px;
   align-items: flex-start;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .admin-badge {
@@ -126,8 +126,8 @@
   background: white;
   border-radius: 24px;
   border: 1px solid #e5e5e5;
-  padding: 28px;
-  margin-bottom: 28px;
+  padding: 24px;
+  margin-bottom: 22px;
 }
 
 .admin-section-header {
@@ -135,7 +135,7 @@
   justify-content: space-between;
   gap: 16px;
   align-items: center;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .admin-section-header h2 {
@@ -155,9 +155,13 @@
   background: #fff4e5;
   border: 1px solid #fde2bf;
   color: #7a4b00;
-  padding: 16px;
+  padding: 18px;
   border-radius: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
+}
+
+.admin-hero-warning {
+  margin-top: 18px;
 }
 
 .overview-grid {
@@ -185,20 +189,22 @@
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid #e5e5e5;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
 .admin-table-row {
   display: grid;
   grid-template-columns: 1.4fr 1.6fr 1fr 1fr 1fr 2.4fr;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
-  padding: 14px 20px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 22px;
+  border-bottom: 1px solid #f4f4f4;
 }
 
 .admin-table-header {
-  background: #fafafa;
+  background: #fff9f0;
   font-weight: 700;
+  color: #333;
 }
 
 .admin-table-actions {
@@ -214,6 +220,17 @@
   border-radius: 12px;
   cursor: pointer;
   font-size: 12px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-icon:hover:not(:disabled) {
+  background: rgba(7, 7, 7, 0.08);
+  transform: translateY(-1px);
+}
+
+.btn-icon:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-icon--danger {
@@ -296,11 +313,12 @@
 }
 
 .report-card {
-  background: #fbfbfb;
-  border: 1px solid #e5e5e5;
-  border-radius: 20px;
-  padding: 22px;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+  border: 1px solid #e8e8e8;
+  border-radius: 22px;
+  padding: 24px;
   min-height: 180px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
 .report-card-title {
@@ -308,7 +326,8 @@
   align-items: center;
   gap: 10px;
   font-weight: 700;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  color: #1f2937;
 }
 
 .report-line {

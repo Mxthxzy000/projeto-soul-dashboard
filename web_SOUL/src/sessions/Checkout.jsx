@@ -217,6 +217,7 @@ export function CheckoutPage() {
 
         const updatePayload = {
           nome: formData.nomeCompleto,
+          email: formData.email,
           phone: formData.telefone,
           plan_slug: selectedPlan,
           status: 'active',
@@ -345,7 +346,7 @@ export function CheckoutPage() {
                           >
                             <span className="plan-option-name">{plan.name}</span>
                             <span className="plan-option-price">R$ {plan.price.toLocaleString("pt-BR")}</span>
-                            <span className="plan-option-period">/mes</span>
+                            <span className="plan-option-period">/mês</span>
                           </button>
                         ))}
                       </div>
@@ -481,8 +482,8 @@ export function CheckoutPage() {
                       <Shield size={24} />
                     </div>
                     <div className="summary-plan-info">
-                      <h4>BitLayer {currentPlan.name}</h4>
-                      <span>Licenca Mensal</span>
+                      <h4>Soul {currentPlan.name}</h4>
+                      <span>Licença Mensal</span>
                     </div>
                   </div>
 
@@ -510,7 +511,7 @@ export function CheckoutPage() {
                     </div>
                     <div className="summary-total">
                       <span>Total</span>
-                      <span className="total-price">R$ {currentPlan.price.toLocaleString("pt-BR")},00/mes</span>
+                      <span className="total-price">R$ {currentPlan.price.toLocaleString("pt-BR")},00/mês</span>
                     </div>
                   </div>
 
@@ -556,8 +557,8 @@ export function CheckoutPage() {
             
             <h2 className="modal-title">Compra Realizada com Sucesso!</h2>
             <p className="modal-description">
-              Obrigado por escolher o S.O.U.L! Sua licenca do plano {currentPlan.name} foi ativada.
-              Clique no botao abaixo para fazer o download do instalador.
+              Obrigado por escolher o S.O.U.L! Sua licença do plano {currentPlan.name} foi ativada.
+              Clique no botão abaixo para fazer o download do instalador.
             </p>
             
             <div className="modal-actions">

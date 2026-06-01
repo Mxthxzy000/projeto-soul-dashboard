@@ -2,8 +2,8 @@
    FEATURES SECTION
    ============================================ */
 .features-section {
-  min-height: 100vh;
-  padding: 120px 0;
+  min-height: auto;
+  padding: 80px 0;
   background: var(--color-surface);
   display: flex;
   flex-direction: column;
